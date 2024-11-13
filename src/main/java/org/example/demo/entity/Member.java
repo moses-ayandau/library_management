@@ -3,13 +3,14 @@ package org.example.demo.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Patron {
+public class Member {
     private int ID;
     private String name;
     private String email;
     private String phone;
     private String address;
-    private List<Booking> bookings = new ArrayList<>();
+    private Role role;
+    private List<Transaction> bookings = new ArrayList<>();
 
     public String getAddress() {
         return address;

@@ -8,7 +8,7 @@
 
 
 
-    <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.demo.views.PatronViewController">
+    <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.demo.HelloController">
     <children>
     <TextField fx:id="nameField" promptText="Name"/>
     <TextField fx:id="emailField" promptText="Email"/>

@@ -5,7 +5,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import org.example.demo.dao.PatronDAO;
-import org.example.demo.entity.Patron;
+import org.example.demo.entity.Member;
 
 public class PatronViewController {
     @FXML
@@ -25,7 +25,7 @@ public class PatronViewController {
     @FXML
     public void handleAddPatron() {
         try {
-            Patron patron = new Patron();
+            Member patron = new Member();
             patron.setName(nameField.getText());
             patron.setEmail(emailField.getText());
             patron.setPhone(phoneField.getText());
@@ -42,7 +42,7 @@ public class PatronViewController {
     public void handleUpdatePatron() {
         try {
             int patronID = Integer.parseInt(patronIDField.getText());
-            Patron patron = patronDAO.getPatronById(patronID);
+            Member patron = patronDAO.getPatronById(patronID);
             if (patron != null) {
                 patron.setName(nameField.getText());
                 patron.setEmail(emailField.getText());

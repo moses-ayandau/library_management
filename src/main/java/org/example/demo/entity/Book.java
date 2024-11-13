@@ -1,18 +1,23 @@
 package org.example.demo.entity;
 
+import java.util.Queue;
+
 public class Book extends LibraryResource{
     private String title;
     private String description;
     private String author;
     private String isbn;
     private boolean available;
+    private int quantity;
+
+
 
 
     public Book(){
         super();
     }
 
-    public Book(String title, String description, String author, String isbn, int publishedYear, boolean available) {
+    public Book(String title, String description, String author, String isbn, int publishedYear, boolean available, int quantity) {
         super();
         this.title = title;
         this.description = description;
@@ -20,6 +25,7 @@ public class Book extends LibraryResource{
         this.isbn = isbn;
         this.publishedYear = publishedYear;
         this.available = available;
+        this.quantity = quantity;
     }
 
     public Book(int i, String title, String author, String description, String isbn, int year, boolean b) {
@@ -66,14 +72,6 @@ public class Book extends LibraryResource{
         this.isbn = isbn;
     }
 
-    public int getPublishedYear() {
-        return publishedYear;
-    }
-
-    public void setPublishedYear(int publishedYear) {
-        this.publishedYear = publishedYear;
-    }
-
     public boolean isAvailable() {
         return available;
     }
@@ -81,7 +79,13 @@ public class Book extends LibraryResource{
     public void setAvailable(boolean available) {
         this.available = available;
     }
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
 
-    // Constructor, Getters and Setters
 }

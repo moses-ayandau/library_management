@@ -1,6 +1,6 @@
 package org.example.demo.dao;
 
-import org.example.demo.entity.Patron;
+import org.example.demo.entity.Member;
 import org.example.demo.javafx.DatabaseConnection;
 
 import java.sql.*;
@@ -9,7 +9,7 @@ import java.util.List;
 
 public class PatronDAO {
 
-    public void addPatron(Patron patron) throws SQLException {
+    public void addPatron(Member patron) throws SQLException {
         String query = "INSERT INTO Patrons (Name, Email, Phone, Address, MembershipDate) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -21,14 +21,14 @@ public class PatronDAO {
         }
     }
 
-    public Patron getPatronById(int patronID) throws SQLException {
+    public Member getPatronById(int patronID) throws SQLException {
         String query = "SELECT * FROM Patrons WHERE PatronID = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, patronID);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                Patron patron = new Patron();
+                Member patron = new Member();
                 patron.setPatronID(rs.getInt("PatronID"));
                 patron.setName(rs.getString("Name"));
                 patron.setEmail(rs.getString("Email"));
@@ -41,14 +41,14 @@ public class PatronDAO {
         return null;
     }
 
-    public List<Patron> getAllPatrons() throws SQLException {
-        List<Patron> patrons = new ArrayList<>();
+    public List<Member> getAllPatrons() throws SQLException {
+        List<Member> patrons = new ArrayList<>();
         String query = "SELECT * FROM Patrons";
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
             while (rs.next()) {
-                Patron patron = new Patron();
+                Member patron = new Member();
                 patron.setPatronID(rs.getInt("PatronID"));
                 patron.setName(rs.getString("Name"));
                 patron.setEmail(rs.getString("Email"));
@@ -60,7 +60,7 @@ public class PatronDAO {
         return patrons;
     }
 
-    public void updatePatron(Patron patron) throws SQLException {
+    public void updatePatron(Member patron) throws SQLException {
         String query = "UPDATE Patrons SET Name = ?, Email = ?, Phone = ?, Address = ? WHERE PatronID = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
