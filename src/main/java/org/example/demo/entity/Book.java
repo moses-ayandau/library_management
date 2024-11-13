@@ -1,43 +1,45 @@
 package org.example.demo.entity;
 
-import java.util.Date;
-
-public class Book {
-    private Long book_id;
-    private String book_title;
+public class Book extends LibraryResource{
+    private String title;
     private String description;
-    private Double book_price;
-    private Date release_date;
-    private Boolean is_available;
-    public Book(String book_title, String description, Double book_price, Date release_date){
-        this.book_title = book_title;
+    private String author;
+    private String isbn;
+    private boolean available;
+
+
+    public Book(){
+        super();
+    }
+
+    public Book(String title, String description, String author, String isbn, int publishedYear, boolean available) {
+        super();
+        this.title = title;
         this.description = description;
-        this.book_price = book_price;
-        this.release_date = release_date;
+        this.author = author;
+        this.isbn = isbn;
+        this.publishedYear = publishedYear;
+        this.available = available;
     }
 
-    public Boolean getIs_available() {
-        return is_available;
+    public Book(int i, String title, String author, String description, String isbn, int year, boolean b) {
+        super();
     }
 
-    public void setIs_available(Boolean is_available) {
-        this.is_available = is_available;
+    public int getBookID() {
+        return ID;
     }
 
-    public Long getBook_id() {
-        return book_id;
+    public void setBookID(int bookID) {
+        this.ID = bookID;
     }
 
-    public void setBook_id(Long book_id) {
-        this.book_id = book_id;
+    public String getTitle() {
+        return title;
     }
 
-    public String getBook_title() {
-        return book_title;
-    }
-
-    public void setBook_title(String book_title) {
-        this.book_title = book_title;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {
@@ -48,23 +50,38 @@ public class Book {
         this.description = description;
     }
 
-    public Double getBook_price() {
-        return book_price;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setBook_price(Double book_price) {
-        this.book_price = book_price;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
-    public Date getRelease_date() {
-        return release_date;
+    public String getIsbn() {
+        return isbn;
     }
 
-    public void setRelease_date(Date release_date) {
-        this.release_date = release_date;
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public int getPublishedYear() {
+        return publishedYear;
+    }
+
+    public void setPublishedYear(int publishedYear) {
+        this.publishedYear = publishedYear;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 
 
-
-
+    // Constructor, Getters and Setters
 }
