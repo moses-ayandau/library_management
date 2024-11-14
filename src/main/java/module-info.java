@@ -4,6 +4,6 @@ module org.example.demo {
     requires java.sql;
 
 
-    opens org.example.demo to javafx.fxml;
+    opens org.example.demo.views to javafx.fxml;
     exports org.example.demo;
 }

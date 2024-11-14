@@ -1,4 +1,4 @@
-package org.example.demo.javafx;
+package org.example.demo.db.conn;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

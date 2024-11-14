@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.demo.views.BookUIController" spacing="10">
+    <!-- Add padding as an Insets element -->
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+    <!-- View All Books Section -->
+    <Button text="View All Books" onAction="#viewAllBooks"/>
+    <TextArea fx:id="bookDisplayArea" editable="false" prefHeight="200" wrapText="true"/>
+
+    <!-- Add Book Section -->
+    <HBox spacing="10">
+        <TextField fx:id="titleField" promptText="Title"/>
+        <TextField fx:id="descriptionField" promptText="Description"/>
+        <TextField fx:id="authorField" promptText="Author"/>
+        <TextField fx:id="isbnField" promptText="ISBN"/>
+        <TextField fx:id="yearField" promptText="Year"/>
+        <TextField fx:id="quantityField" promptText="Quantity"/>
+        <CheckBox fx:id="availableCheckBox" text="Available"/>
+        <Button text="Add Book" onAction="#addBook"/>
+    </HBox>
+
+    <!-- Retrieve Book by ID Section -->
+    <HBox spacing="10">
+        <TextField fx:id="bookIdField" promptText="Book ID"/>
+        <Button text="Get Book" onAction="#getBookById"/>
+    </HBox>
+</VBox>

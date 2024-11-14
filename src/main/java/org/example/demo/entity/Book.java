@@ -1,14 +1,34 @@
 package org.example.demo.entity;
 
-import java.util.Queue;
+import java.util.Date;
 
-public class Book extends LibraryResource{
+public class Book {
+    public int ID;
     private String title;
     private String description;
     private String author;
     private String isbn;
     private boolean available;
     private int quantity;
+    private Date publishedDate;
+
+
+    public java.sql.Date getPublishedDate() {
+        return (java.sql.Date) publishedDate;
+    }
+
+    public void setPublishedDate(Date publishedDate) {
+        this.publishedDate = publishedDate;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
 
 
 
@@ -17,13 +37,13 @@ public class Book extends LibraryResource{
         super();
     }
 
-    public Book(String title, String description, String author, String isbn, int publishedYear, boolean available, int quantity) {
+    public Book(String title, String description, String author, String isbn, Date publishedDate, boolean available, int quantity) {
         super();
         this.title = title;
         this.description = description;
         this.author = author;
         this.isbn = isbn;
-        this.publishedYear = publishedYear;
+        this.publishedDate = publishedDate;
         this.available = available;
         this.quantity = quantity;
     }
@@ -32,13 +52,6 @@ public class Book extends LibraryResource{
         super();
     }
 
-    public int getBookID() {
-        return ID;
-    }
-
-    public void setBookID(int bookID) {
-        this.ID = bookID;
-    }
 
     public String getTitle() {
         return title;
@@ -85,6 +98,16 @@ public class Book extends LibraryResource{
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    @Override
+    public String toString() {
+        return "Book ID: " + ID +
+                "\nTitle: " + title +
+                "\nAuthor: " + author +
+                "\nISBN: " + isbn +
+                "\nPublished Date: " + publishedDate +
+                "\nAvailable: " + available + "\n";
     }
 
 
