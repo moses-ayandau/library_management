@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.demo.views.MainController">
+    <TabPane fx:id="tabPane">
+        <Tab text="Transactions" fx:id="transactionsTab" />
+        <Tab text="Books" fx:id="booksTab" />
+        <Tab text="Users" fx:id="usersTab" />
+    </TabPane>
+</VBox>
