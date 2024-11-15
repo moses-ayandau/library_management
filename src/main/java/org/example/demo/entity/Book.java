@@ -1,6 +1,7 @@
 package org.example.demo.entity;
 
-import java.util.Date;
+
+import java.sql.Date;
 
 public class Book {
     public int ID;
@@ -10,15 +11,15 @@ public class Book {
     private String isbn;
     private boolean available;
     private int quantity;
-    private Date publishedDate;
+    private Date publishedYear;
 
 
-    public java.sql.Date getPublishedDate() {
-        return (java.sql.Date) publishedDate;
+    public Date getPublishedYear() {
+        return this.publishedYear;
     }
 
-    public void setPublishedDate(Date publishedDate) {
-        this.publishedDate = publishedDate;
+    public void setPublishedYear(Date publishedDate) {
+        this.publishedYear = publishedDate;
     }
 
     public int getID() {
@@ -37,20 +38,16 @@ public class Book {
         super();
     }
 
-    public Book(String title, String description, String author, String isbn, Date publishedDate, boolean available, int quantity) {
+    public Book(String title, String description, String author, String isbn, Date publishedDate, boolean available) {
         super();
         this.title = title;
         this.description = description;
         this.author = author;
         this.isbn = isbn;
-        this.publishedDate = publishedDate;
+        this.publishedYear = publishedDate;
         this.available = available;
-        this.quantity = quantity;
     }
 
-    public Book(int i, String title, String author, String description, String isbn, int year, boolean b) {
-        super();
-    }
 
 
     public String getTitle() {
@@ -92,13 +89,13 @@ public class Book {
     public void setAvailable(boolean available) {
         this.available = available;
     }
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
+//    public int getQuantity() {
+//        return quantity;
+//    }
+//
+//    public void setQuantity(int quantity) {
+//        this.quantity = quantity;
+//    }
 
     @Override
     public String toString() {
@@ -106,7 +103,7 @@ public class Book {
                 "\nTitle: " + title +
                 "\nAuthor: " + author +
                 "\nISBN: " + isbn +
-                "\nPublished Date: " + publishedDate +
+                "\nPublished Date: " + publishedYear +
                 "\nAvailable: " + available + "\n";
     }
 

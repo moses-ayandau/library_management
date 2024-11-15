@@ -56,7 +56,7 @@ public class ReservationUIController {
         Reservation reservation = new Reservation();
         reservation.setPatronID(Integer.parseInt(patronIdField.getText()));
         reservation.setBookID(Integer.parseInt(bookIdField.getText()));
-        reservation.setDate(Date.valueOf(reservationDatePicker.getValue()));
+        reservation.setReservedDate(Date.valueOf(reservationDatePicker.getValue()));
         reservation.setDueDate(Date.valueOf(dueDatePicker.getValue()));
         reservation.setStatus(statusChoiceBox.getValue());
 
