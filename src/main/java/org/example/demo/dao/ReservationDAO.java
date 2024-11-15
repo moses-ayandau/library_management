@@ -13,18 +13,21 @@ public class ReservationDAO {
 
 
     public void addReservation(Reservation reservation) throws SQLException {
-        String sql = "INSERT INTO reservation (patronID, bookID, date, status, dueDate) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO reservation (userID, bookID, reservedDate, reservedStatus, dueDate) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, reservation.getPatronID());
             statement.setInt(2, reservation.getBookID());
-            statement.setDate(3, reservation.getDate());
+            statement.setDate(3, reservation.getReservedDate());
             statement.setString(4, reservation.getStatus().toString());
             statement.setDate(5, reservation.getDueDate());
 
             statement.executeUpdate();
+        }
+        catch (Exception e){
+            System.out.println(e);
         }
     }
 
@@ -46,7 +49,7 @@ public class ReservationDAO {
     }
 
     public void updateReservationStatus(Reservation reservation) throws SQLException {
-        String sql = "UPDATE reservation SET  status = ? WHERE ID = ?";
+        String sql = "UPDATE reservation SET  reservedStatus = ? WHERE ID = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -86,10 +89,10 @@ public class ReservationDAO {
     private Reservation mapResultSetToReservation(ResultSet resultSet) throws SQLException {
         Reservation reservation = new Reservation();
         reservation.setID(resultSet.getInt("ID"));
-        reservation.setPatronID(resultSet.getInt("patronID"));
+        reservation.setPatronID(resultSet.getInt("userID"));
         reservation.setBookID(resultSet.getInt("bookID"));
-        reservation.setDate(resultSet.getDate("date"));
-        reservation.setStatus(ReservationStatus.valueOf(resultSet.getString("status")));
+        reservation.setReservedDate(resultSet.getDate("reservedDate"));
+        reservation.setStatus(ReservationStatus.valueOf(resultSet.getString("reservedStatus")));
         reservation.setDueDate(resultSet.getDate("dueDate"));
         return reservation;
     }
@@ -105,7 +108,7 @@ public class ReservationDAO {
                 reservation.setID(resultSet.getInt("ID"));
                 reservation.setPatronID(resultSet.getInt("patronID"));
                 reservation.setBookID(resultSet.getInt("bookID"));
-                reservation.setDate(resultSet.getDate("date"));
+                reservation.setReservedDate(resultSet.getDate("date"));
                 reservation.setStatus(ReservationStatus.valueOf(resultSet.getString("status")));
                 reservation.setDueDate(resultSet.getDate("dueDate"));
                 return reservation;

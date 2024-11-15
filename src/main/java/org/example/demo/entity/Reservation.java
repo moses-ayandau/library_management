@@ -6,7 +6,7 @@ public class Reservation {
     private int ID;
     private int patronID;
     private int bookID;
-    private Date date;
+    private Date reservedDate;
     private ReservationStatus status;
     private Date dueDate;
 
@@ -34,12 +34,12 @@ public class Reservation {
         this.bookID = bookID;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getReservedDate() {
+        return reservedDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setReservedDate(Date reservedDate) {
+        this.reservedDate = reservedDate;
     }
 
     public ReservationStatus getStatus() {

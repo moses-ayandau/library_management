@@ -41,7 +41,7 @@ public class MainController {
 
     private void loadTabContent(Tab tab, String fxmlFile) {
         try {
-            VBox content = FXMLLoader.load(getClass().getResource(fxmlFile));
+            VBox content = FXMLLoader.load(getClass().getResource("/org/example/demo/"+fxmlFile));
             tab.setContent(content);
         } catch (IOException e) {
             e.printStackTrace();
