@@ -1,10 +1,10 @@
 package org.example.demo.dao;
 
-
 import org.example.demo.entity.Book;
 import org.example.demo.entity.User;
 import org.example.demo.entity.Role;
 import org.example.demo.db.conn.DatabaseConnection;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,7 +13,10 @@ import java.util.List;
 public class UserDAO {
 
     public boolean createUser(User user) {
-        String sql = "INSERT INTO user (name, email, phone, address, role) VALUES (?, ?, ?, ?, ?)";
+
+        String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+
+        String sql = "INSERT INTO user (name, email, phone, address, role, password) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -23,6 +26,7 @@ public class UserDAO {
             pstmt.setString(3, user.getPhone());
             pstmt.setString(4, user.getAddress());
             pstmt.setString(5, user.getRole().toString());
+            pstmt.setString(6, hashedPassword);  // Store the hashed password
 
             int affectedRows = pstmt.executeUpdate();
 
@@ -37,6 +41,31 @@ public class UserDAO {
             e.printStackTrace();
         }
         return false;
+    }
+
+
+    public User authenticate(String email, String password) {
+        String sql = "SELECT * FROM user WHERE email = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                String storedPasswordHash = rs.getString("password_hash");
+
+                // Check if the provided password matches the stored hash
+                if (BCrypt.checkpw(password, storedPasswordHash)) {
+                    User user = mapResultSetToUser(rs);
+                    return user;  // Return the user object if the password matches
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;  // Return null if authentication fails
     }
 
     // Get all users
@@ -62,8 +91,8 @@ public class UserDAO {
     public User getUserWithReservations(int userId) {
         String userSql = "SELECT * FROM user WHERE id = ?";
         String reservationSql = "SELECT b.* FROM book b " +
-                "JOIN reservation r ON b.id = r.book_id " +
-                "WHERE r.user_id = ?";
+                "JOIN reservation r ON b.id = r.bookId " +
+                "WHERE r.userId = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement userStmt = conn.prepareStatement(userSql);
@@ -131,6 +160,7 @@ public class UserDAO {
         return false;
     }
 
+    // Helper method to map a result set to a User object
     private User mapResultSetToUser(ResultSet rs) throws SQLException {
         User user = new User();
         user.setPatronID(rs.getInt("id"));

@@ -5,12 +5,11 @@ import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 
 public class Application extends javafx.application.Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("book-ui.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("user-ui.fxml"));
         VBox root = loader.load();
         Scene scene = new Scene(root, 600, 400);
         primaryStage.setScene(scene);

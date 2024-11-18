@@ -1,67 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
 <?import javafx.geometry.Insets?>
 
-<VBox spacing="10" alignment="CENTER" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="org.example.demo.views.UserController">
+<VBox xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.demo.views.AuthController"
+      spacing="15"
+      alignment="CENTER"
+      style="-fx-background-color: #f4f4f4; -fx-padding: 30;"
+        fx:id="authBox"
+>
 
-    <padding>
-        <Insets top="20" right="20" bottom="20" left="20"/>
-    </padding>
+    <Text text="Login / Create Account"
+          style="-fx-font-size: 24px; -fx-fill: #2c3e50; -fx-font-weight: bold;"/>
 
-    <SplitPane dividerPositions="0.7" VBox.vgrow="ALWAYS">
-        <VBox spacing="10">
-            <!-- Input Form -->
-            <GridPane hgap="10" vgap="10">
-                <padding>
-                    <Insets top="10" right="10" bottom="10" left="10"/>
-                </padding>
+    <VBox spacing="10" alignment="CENTER"
+          style="-fx-background-color: white;
+                 -fx-background-radius: 10;
+                 -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+        <padding>
+            <Insets top="20" right="30" bottom="20" left="30"/>
+        </padding>
 
-                <Label text="Name:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                <TextField fx:id="nameField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        <TextField fx:id="nameField"
+                   promptText="Name"
+                   visible="false"
+                   style="-fx-background-radius: 5; -fx-padding: 10;"/>
 
-                <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <TextField fx:id="emailField"
+                   promptText="Email"
+                   style="-fx-background-radius: 5; -fx-padding: 10;"/>
 
-                <Label text="Phone:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-                <TextField fx:id="phoneField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        <TextField fx:id="phoneField"
+                   promptText="Phone"
+                   visible="false"
+                   style="-fx-background-radius: 5; -fx-padding: 10;"/>
 
-                <Label text="Address:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-                <TextField fx:id="addressField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+        <TextField fx:id="addressField"
+                   promptText="Address"
+                   visible="false"
+                   style="-fx-background-radius: 5; -fx-padding: 10;"/>
 
-                <Label text="Role:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-                <ComboBox fx:id="roleComboBox" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
-            </GridPane>
+        <PasswordField fx:id="passwordField"
+                       promptText="Password"
+                       style="-fx-background-radius: 5; -fx-padding: 10;"/>
 
-            <!-- Action Buttons -->
-            <HBox spacing="10" alignment="CENTER">
-                <Button text="Create User" onAction="#handleCreateUser"/>
-                <Button text="Update User" onAction="#handleUpdateUser"/>
-                <Button text="Delete User" onAction="#handleDeleteUser"/>
-            </HBox>
+        <Button fx:id="actionButton"
+                text="Login"
+                onAction="#handleAction"
+                style="-fx-background-color: #3498db;
+                       -fx-text-fill: white;
+                       -fx-background-radius: 5;
+                       -fx-padding: 10;"/>
+    </VBox>
 
-            <!-- User Table -->
-            <TableView fx:id="userTable" VBox.vgrow="ALWAYS">
-                <columns>
-                    <TableColumn fx:id="idColumn" text="ID" prefWidth="50"/>
-                    <TableColumn fx:id="nameColumn" text="Name" prefWidth="150"/>
-                    <TableColumn fx:id="emailColumn" text="Email" prefWidth="200"/>
-                    <TableColumn fx:id="phoneColumn" text="Phone" prefWidth="100"/>
-                </columns>
-            </TableView>
-        </VBox>
-
-        <!-- Reservations Panel -->
-        <VBox spacing="10">
-            <padding>
-                <Insets top="10" right="10" bottom="10" left="10"/>
-            </padding>
-
-            <Label text="User's Reservations" style="-fx-font-weight: bold"/>
-            <ListView fx:id="reservationList" VBox.vgrow="ALWAYS"/>
-        </VBox>
-    </SplitPane>
-
+    <Button text="Create Account"
+            onAction="#toggleCreateAccountMode"
+            style="-fx-background-color: transparent;
+                   -fx-text-fill: #3498db;
+                   -fx-underline: true;"/>
 </VBox>

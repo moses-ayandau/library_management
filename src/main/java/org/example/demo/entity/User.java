@@ -11,7 +11,18 @@ public class User {
      String phone;
      String address;
      Role role;
+     String password;
+
      List<Book> books = new ArrayList<>();
+
+     public String getPassword() {
+          return password;
+     }
+
+     public void setPassword(String password) {
+          this.password = password;
+     }
+
 
 
 
