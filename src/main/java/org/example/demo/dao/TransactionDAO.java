@@ -2,6 +2,7 @@ package org.example.demo.dao;
 
 
 
+import org.example.demo.dao.interfaces.ITransaction;
 import org.example.demo.entity.Transaction;
 import org.example.demo.db.conn.DatabaseConnection;
 
@@ -9,7 +10,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TransactionDAO {
+public class TransactionDAO implements ITransaction {
 
     public boolean createTransaction(Transaction transaction) {
         String sql = "INSERT INTO transaction (bookID, userID, borrowedDate, dueDate) VALUES (?, ?, ?, ?)";
@@ -39,7 +40,7 @@ public class TransactionDAO {
 
     // Return a book
     public boolean returnBook(int transactionId, Date returnDate) {
-        String sql = "UPDATE transaction SET returned_date = ? WHERE id = ?";
+        String sql = "UPDATE transaction SET returnedDate = ? WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -70,6 +71,7 @@ public class TransactionDAO {
                 transaction.setPatronID(rs.getInt("userId"));
                 transaction.setBorrowedDate(rs.getDate("borrowedDate"));
                 transaction.setDueDate(rs.getDate("dueDate"));
+
                 transactions.add(transaction);
             }
         } catch (SQLException e) {

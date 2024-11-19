@@ -10,6 +10,6 @@ public interface IBookDAO {
     void addBook(Book book) throws SQLException;
     Book getBookById(int bookId) throws SQLException;
     boolean updateBook(Book book) throws SQLException;
+    boolean deleteBook(int bookId) throws SQLException;
 
-    List<Book> getBooksByAvailability(boolean b);
 }

@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.example.demo.dao.ReservationDAO;
+import org.example.demo.dao.interfaces.IReservationDAO;
 import org.example.demo.entity.Reservation;
 import org.example.demo.entity.ReservationStatus;
 
@@ -43,13 +44,13 @@ public class ReservationController implements Initializable {
     @FXML
     private Label reservationLabel;
 
-    private ReservationDAO reservationDAO;
+    private final IReservationDAO reservationDAO = new ReservationDAO();
     private ObservableList<Reservation> reservationList;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        reservationDAO = new ReservationDAO();
+
         reservationList = FXCollections.observableArrayList();
 
         idColumn.setCellValueFactory(new PropertyValueFactory<>("ID"));

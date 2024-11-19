@@ -59,7 +59,7 @@ public class TransactionController implements Initializable {
             Transaction transaction = new Transaction();
             transaction.setBookID(Integer.parseInt(bookIdField.getText()));
             transaction.setPatronID(Integer.parseInt(patronIdField.getText()));
-            transaction.setBorrowedDate(new Date());
+            transaction.setBorrowedDate((java.sql.Date) new Date());
             transaction.setDueDate(java.sql.Date.valueOf(dueDatePicker.getValue()));
 
             if (transactionDAO.createTransaction(transaction)) {

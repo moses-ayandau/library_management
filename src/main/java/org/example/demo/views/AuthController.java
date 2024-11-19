@@ -2,7 +2,6 @@ package org.example.demo.views;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -11,14 +10,13 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.example.demo.Application;
-import org.example.demo.dao.UserDAOC;
+import org.example.demo.dao.UserDAO;
+import org.example.demo.dao.interfaces.IUserDAO;
 import org.example.demo.entity.User;
 import org.example.demo.entity.Role;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Objects;
 
 public class AuthController {
 
@@ -29,7 +27,7 @@ public class AuthController {
     @FXML private PasswordField passwordField;
     @FXML private Button actionButton;
 
-    private UserDAOC userDAO = new UserDAOC();
+    private IUserDAO userDAO = new UserDAO();
 
     @FXML
     private VBox authBox;
@@ -63,13 +61,18 @@ public class AuthController {
         }
     }
 
-   @FXML
+    @FXML
     private void loginUser() {
         String email = emailField.getText();
         String password = passwordField.getText();
 
         if (email.isEmpty() || password.isEmpty()) {
             showAlert("Validation Error", "Email and password cannot be empty.", AlertType.ERROR);
+            return;
+        }
+
+        if (!email.contains("@")) {
+            showAlert("Validation Error", "Please enter a valid email address.", AlertType.ERROR);
             return;
         }
 
@@ -95,6 +98,11 @@ public class AuthController {
             return;
         }
 
+        if (!email.contains("@")) {
+            showAlert("Validation Error", "Please enter a valid email address.", AlertType.ERROR);
+            return;
+        }
+
         User newUser = new User(name, email, phone, address, Role.PATRON);
         newUser.setPassword(password);
 
@@ -102,6 +110,7 @@ public class AuthController {
         if (isCreated) {
             showAlert("User Created", "Account has been successfully created.", AlertType.INFORMATION);
             toggleCreateAccountMode();
+            clearInputFields();  // Clear input fields after successful account creation
         } else {
             showAlert("Error", "User creation failed.", AlertType.ERROR);
         }
@@ -114,12 +123,12 @@ public class AuthController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
     @FXML
     private void switchToBookPage(User user) {
         try {
             URL fxmlUrl = getClass().getResource("/org/example/demo/book-ui.fxml");
             if (fxmlUrl == null) {
-                System.err.println("FXML file not found at: /org/example/demo/book-ui.fxml");
                 showAlert("Error", "FXML file not found.", AlertType.ERROR);
                 return;
             }
@@ -141,4 +150,12 @@ public class AuthController {
         }
     }
 
+    // Clear input fields after account creation
+    private void clearInputFields() {
+        nameField.clear();
+        emailField.clear();
+        phoneField.clear();
+        addressField.clear();
+        passwordField.clear();
+    }
 }

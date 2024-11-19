@@ -26,6 +26,7 @@ public class BookDAO implements IBookDAO {
                 book.setAuthor(rs.getString("Author"));
                 book.setIsbn(rs.getString("ISBN"));
                 book.setPublishedYear(rs.getInt("PublishedYear"));
+                book.setQuantity(rs.getInt("quantity"));
                 books.add(book);
             }
         } catch (Exception e) {
@@ -61,8 +62,8 @@ public class BookDAO implements IBookDAO {
                 book.setDescription(rs.getString("Description"));
                 book.setAuthor(rs.getString("Author"));
                 book.setIsbn(rs.getString("ISBN"));
-                book.setPublishedYear(Integer.parseInt("PublishedYear"));
-                book.setQuantity(Integer.parseInt("quantity"));
+                book.setPublishedYear(rs.getInt("PublishedYear"));
+                book.setQuantity(rs.getInt("quantity"));
 
                 return book;
             }
@@ -117,18 +118,29 @@ public class BookDAO implements IBookDAO {
 
 
     public boolean updateBook(Book book) throws SQLException {
-        String query = "UPDATE Book SET Available = ? WHERE ID = ?";
+        String query = "UPDATE Book SET  Quantity = ? WHERE ID = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setBoolean(1, book.isAvailable());  // Set the availability (true = available, false = booked/reserved)
-            stmt.setInt(2, book.getID());  // Use the book's ID to find the record
-            stmt.executeUpdate();
+
+
+            stmt.setInt(1, book.getQuantity());
+
+            stmt.setInt(2, book.getID());
+
+            int rowsUpdated = stmt.executeUpdate();
+
+            return rowsUpdated > 0;
         }
-        return false;
     }
 
-    @Override
-    public List<Book> getBooksByAvailability(boolean b) {
-        return List.of();
+    public boolean deleteBook(int bookId) throws SQLException {
+        String sql = "DELETE FROM books WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, bookId);
+            return stmt.executeUpdate() > 0;
+        }
     }
+
+
 }

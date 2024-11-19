@@ -11,6 +11,10 @@ public class Book extends LibraryResource{
     private boolean available;
     private int quantity;
 
+    public Book(int bookId) {
+        super();
+    }
+
 
     public int getID() {
         return ID;

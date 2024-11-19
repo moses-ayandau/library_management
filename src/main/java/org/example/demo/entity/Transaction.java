@@ -1,6 +1,7 @@
 package org.example.demo.entity;
 
-import java.util.Date;
+
+import java.sql.Date;
 
 public class Transaction {
     private int ID;
