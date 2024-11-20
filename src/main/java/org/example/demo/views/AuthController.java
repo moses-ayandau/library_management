@@ -141,7 +141,7 @@ public class AuthController {
 
             Stage stage = (Stage) authBox.getScene().getWindow();
             stage.setScene(scene);
-            stage.setTitle("Book UI");
+            stage.setTitle("Library");
             stage.show();
 
         } catch (IOException e) {

@@ -14,24 +14,21 @@ public class ReservationDAO implements IReservationDAO {
 
 
     public boolean addReservation(Reservation reservation) throws SQLException {
-        String sql = "INSERT INTO reservation (userID, bookID, reservedDate, reservedStatus, dueDate) VALUES (?, ?, ?, ?, ?)";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("INSERT INTO reservation (bookID, userID, reservedDate) VALUES (?, ?, ?)")) {
 
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+            stmt.setInt(1, reservation.getBookID());
+            stmt.setInt(2, reservation.getPatronID());
+            stmt.setDate(3, reservation.getReservedDate());
 
-            statement.setInt(1, reservation.getPatronID());
-            statement.setInt(2, reservation.getBookID());
-            statement.setDate(3, reservation.getReservedDate());
-            statement.setString(4, reservation.getStatus().toString());
-            statement.setDate(5, reservation.getDueDate());
-
-            statement.executeUpdate();
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("SQL Exception in addReservation: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
         }
-        catch (Exception e){
-            System.out.println(e);
-        }
-        return false;
     }
+
 
     public Reservation getReservationById(int id) throws SQLException {
         String sql = "SELECT * FROM reservation WHERE ID = ?";
