@@ -6,7 +6,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 
+
 public class Application extends javafx.application.Application {
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("user-ui.fxml"));

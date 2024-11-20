@@ -21,6 +21,18 @@
             <TextField fx:id="yearField" promptText="Year" style="-fx-border-radius: 5; -fx-padding: 10; -fx-font-size: 14px;"/>
             <TextField fx:id="quantityField" promptText="Quantity" style="-fx-border-radius: 5; -fx-padding: 10; -fx-font-size: 14px;"/>
             <Button text="Add Book" onAction="#addBook" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-border-radius: 5; -fx-cursor: hand;" />
+
+
+
+            <Label text="Add Journal" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #333;"/>
+            <TextField fx:id="journalTitleTextField" promptText="Journal Title" style="-fx-border-radius: 5; -fx-padding: 10; -fx-font-size: 14px;"/>
+            <TextField fx:id="issnField" promptText="Journal ISSN" style="-fx-border-radius: 5; -fx-padding: 10; -fx-font-size: 14px;"/>
+            <TextField fx:id="publisherField" promptText="Publisher" style="-fx-border-radius: 5; -fx-padding: 10; -fx-font-size: 14px;"/>
+            <TextField fx:id="publishedYearField" promptText="Journal Published Year" style="-fx-border-radius: 5; -fx-padding: 10; -fx-font-size: 14px;"/>
+
+                <Button text="Add" fx:id="addJournalButton" onAction="#addJournal" />
+
+
         </VBox>
 
         <!-- Right side for the TableView to display books -->
@@ -46,7 +58,7 @@
                                 <TableColumn fx:id="colQuantity" text="Quantity"/>
                                 <TableColumn text="Year" fx:id="colYear" prefWidth="80"/>
                                 <!-- Action buttons column -->
-                                <TableColumn text="Actions" fx:id="colActions" prefWidth="150"/>
+                                <TableColumn text="Actions" fx:id="colActions" prefWidth="200"/>
                             </columns>
                         </TableView>
                     </VBox>
@@ -103,6 +115,42 @@
                                 <TableColumn text="Address" fx:id="userAddress" prefWidth="150" />
                                 <TableColumn text="Book Id" fx:id="userBookID" prefWidth="100"/>
                                 <TableColumn text="Reserved Date" fx:id="reservedDateUser" prefWidth="100"/>
+
+
+                            </columns>
+                        </TableView>
+                    </VBox>
+                </Tab>
+
+
+                <Tab text="Journals" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333;">
+
+
+                    <!-- TableView for Journals -->
+                    <TableView fx:id="journalDTOTableView" prefHeight="200" prefWidth="500">
+                        <columns>
+                            <TableColumn fx:id="journalID" text="ID" prefWidth="50" />
+                            <TableColumn fx:id="journalTitle" text="Title" prefWidth="150" />
+                            <TableColumn fx:id="journalISSN" text="ISSN" prefWidth="100" />
+                            <TableColumn fx:id="journalPublisher" text="Publisher" prefWidth="150" />
+                            <TableColumn fx:id="journalPublishedYear" text="Published Year" prefWidth="150" />
+                        </columns>
+                    </TableView>
+                </Tab>
+
+                <Tab text="View All Users" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333;">
+                    <VBox spacing="15">
+                        <!-- Retrieve Book by ID Section -->
+
+
+                        <!-- Book Table -->
+                        <TableView fx:id="userTableView" prefHeight="300" style="-fx-background-color: #f4f4f9; -fx-border-radius: 10;">
+                            <columns>
+                                <TableColumn text="User ID" fx:id="ID" prefWidth="40"/>
+                                <TableColumn text="User Name" fx:id="name" prefWidth="90"/>
+                                <TableColumn text="Email" fx:id="email" prefWidth="150"/>
+                                <TableColumn text="Phone" fx:id="phone" prefWidth="100"/>
+                                <TableColumn text="Address" fx:id="address" prefWidth="150" />
 
 
                             </columns>

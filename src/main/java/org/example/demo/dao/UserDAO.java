@@ -7,6 +7,8 @@ import org.example.demo.entity.User;
 import org.example.demo.entity.Role;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO implements IUserDAO {
 
@@ -61,6 +63,24 @@ public class UserDAO implements IUserDAO {
         return null;
     }
 
+public List<User> getAllUsers() {
+    String sql = "SELECT * FROM user";
+    List<User> users = new ArrayList<>();
+
+    try (Connection conn = DatabaseConnection.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            User user = mapResultSetToUser(rs); // Map result set to User object
+            users.add(user);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return users;
+}
 
 
     private User mapResultSetToUser(ResultSet rs) throws SQLException {

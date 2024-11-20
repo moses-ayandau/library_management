@@ -133,14 +133,28 @@ public class BookDAO implements IBookDAO {
         }
     }
 
-    public boolean deleteBook(int bookId) throws SQLException {
-        String sql = "DELETE FROM books WHERE id = ?";
+    public boolean deleteBook(int bookID) throws SQLException {
+        if (hasActiveTransactions(bookID)) {
+            return false;
+        }
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, bookId);
+             PreparedStatement stmt = conn.prepareStatement("DELETE FROM book WHERE ID = ?")) {
+            stmt.setInt(1, bookID);
             return stmt.executeUpdate() > 0;
         }
     }
+
+    private boolean hasActiveTransactions(int bookID) throws SQLException {
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM transaction WHERE bookID = ?")) {
+            stmt.setInt(1, bookID);
+            try (ResultSet rs = stmt.executeQuery()) {
+                rs.next();
+                return rs.getInt(1) > 0;
+            }
+        }
+    }
+
 
 
 }

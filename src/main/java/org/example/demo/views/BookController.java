@@ -12,11 +12,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.example.demo.dao.BookDAO;
-import org.example.demo.dao.ReservationDAO;
-import org.example.demo.dao.TransactionDAO;
+import org.example.demo.dao.*;
 import org.example.demo.dao.interfaces.IBookDAO;
+import org.example.demo.dao.interfaces.IUserDAO;
 import org.example.demo.db.conn.DatabaseConnection;
+import org.example.demo.dto.JournalDTO;
 import org.example.demo.dto.UserReservationDTO;
 import org.example.demo.entity.*;
 
@@ -28,6 +28,8 @@ public class BookController {
     private final IBookDAO bookDAO = new BookDAO();
     private final TransactionDAO transactionDAO = new TransactionDAO();
     private final ReservationDAO reservationDAO = new ReservationDAO();
+    private final JournalDAO journalDAO = new JournalDAO();
+    private final IUserDAO userDAO = new UserDAO();
     @FXML
     public TableColumn<Transaction, Integer> bookID;
     @FXML
@@ -40,6 +42,15 @@ public class BookController {
     public TableColumn<Transaction, Date> dueDate;
     @FXML
     public TableColumn<Transaction, Void> returnCol;
+
+
+    @FXML public TableView<Journal> journalDTOTableView;
+    @FXML public TableColumn<JournalDTO, Integer> journalID;
+    @FXML public TableColumn<JournalDTO, String> journalTitle;
+    @FXML public TableColumn<JournalDTO, String> journalPublisher;
+    @FXML public TableColumn<JournalDTO, String> journalISSN;
+    @FXML public TableColumn<JournalDTO, Integer> journalPublishedYear;
+
 
     @FXML
     public TableView<Reservation> reservedTable;
@@ -72,7 +83,19 @@ public class BookController {
     public TableColumn<UserReservationDTO, Integer> userBookID;
     @FXML
     public TableColumn<UserReservationDTO, Date> reservedDateUser;
+    public TextField journalTitleTextField;
+    public TextField publishedYearField;
+    public TextField issnField;
+    public TextField idField;
+    public TextField publisherField;
+    public Button addJournalButton;
 
+    @FXML TableView<User> userTableView;
+    @FXML  public TableColumn<User, Integer> ID;
+    @FXML  public TableColumn<User, String> name;
+    @FXML  public TableColumn<User, String> email;
+    @FXML  public TableColumn<User, String> phone;
+    @FXML  public TableColumn<User, String> address;
 
     @FXML
     private TextField bookIdField;
@@ -156,6 +179,21 @@ public class BookController {
         reservedDateUser.setCellValueFactory(new PropertyValueFactory<>("reservedDate"));
 
 
+//        Journal column
+        journalID.setCellValueFactory(new PropertyValueFactory<>("ID"));
+        journalTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        journalISSN.setCellValueFactory(new PropertyValueFactory<>("issn"));
+        journalPublisher.setCellValueFactory(new PropertyValueFactory<>("publisher"));
+        journalPublishedYear.setCellValueFactory(new PropertyValueFactory<>("publishedYear"));
+
+        ID.setCellValueFactory(new PropertyValueFactory<>("ID"));
+        name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        email.setCellValueFactory(new PropertyValueFactory<>("email"));
+        phone.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        address.setCellValueFactory(new PropertyValueFactory<>("address"));
+
+
+        loadUsers();
         setupActionButtons();
     }
 
@@ -206,7 +244,8 @@ public class BookController {
                 deleteBook(book);
                 deleteStage.close();
             } catch (SQLException e) {
-                showError("Error deleting book: " + e.getMessage());
+
+                showError("Error deleting book: Active transaction on book may exist!" );
             }
         });
 
@@ -272,6 +311,16 @@ public class BookController {
         } catch (SQLException e) {
             showError("Error loading books: " + e.getMessage());
         }
+    }
+
+    private void loadUsers() {
+        ObservableList<User> users = FXCollections.observableArrayList();
+
+        // Fetch the users from the DAO (add logic in the DAO to get all users)
+        users.addAll(userDAO.getAllUsers());
+
+        // Set the items in the table
+        userTableView.setItems(users);
     }
 
     private void loadBorrowedBooks() {
@@ -450,22 +499,28 @@ public class BookController {
         reservation.setBookID(book.getID());
         reservation.setPatronID(patronID);
         reservation.setReservedDate(new java.sql.Date(System.currentTimeMillis()));
-        reservation.setStatus(ReservationStatus.PENDING);
 
-        if (reservationDAO.addReservation(reservation)) {
-            book.setQuantity(book.getQuantity() - 1);
-            if (bookDAO.updateBook(book)) {
-                loadBooks();
-                loadReservations();
-                loadUsersWithReservations();
-                showInfo("Book reserved successfully: " + book.getTitle());
+        try {
+            if (reservationDAO.addReservation(reservation)) {
+                book.setQuantity(book.getQuantity() - 1);
+                if (bookDAO.updateBook(book)) {
+                    loadBooks();
+                    loadReservations();
+                    loadUsersWithReservations();
+                    showInfo("Book reserved successfully: " + book.getTitle());
+                } else {
+                    showError("Failed to update book availability.");
+                }
             } else {
-//                reservationDAO.cancelReservation(reservation.getID());
-                showError("Failed to update book availability.");
+                System.err.println("Reservation DAO failed to create reservation.");
+                showError("Failed to create reservation.");
             }
-        } else {
-            showError("Failed to create reservation.");
+        } catch (Exception e) {
+            System.err.println("Exception during reservation process:");
+            e.printStackTrace();
+            showError("An error occurred while trying to reserve the book.");
         }
+
     }
 
     private void openBorrowModal(Book book) {
@@ -547,13 +602,80 @@ public class BookController {
         vbox.setStyle("-fx-padding: 20;");
         return vbox;
     }
+    
+//    Journal side
+private void loadJournals() throws SQLException {
+    List<Journal> journals = journalDAO.getAllJournals();
+    ObservableList<Journal> journalList = FXCollections.observableArrayList(journals);
+    journalDTOTableView.setItems(journalList);
+}
 
+    // Add a journal
+    @FXML
+    private void addJournal() {
+        try {
+            String title = journalTitleTextField.getText();
+            System.out.println(title);
+            String publishedYearText = publishedYearField.getText();
+            System.out.println(publishedYearText);
+            String issn = issnField.getText();
+            System.out.println(issn);  // Corrected this line to print the actual ISSN value
+            String publisher = publisherField.getText();
+
+            // Validate the published year
+            if (publishedYearText.isEmpty()) {
+                showError("Published year cannot be empty.");
+                return;  // Exit method if invalid input
+            }
+
+            System.out.println(publishedYearText);
+            int publishedYear;
+            try {
+                publishedYear = Integer.parseInt(publishedYearText);
+                System.out.println(publishedYear);
+            } catch (NumberFormatException e) {
+                showError("Invalid published year. Please enter a valid number.");
+                return;  // Exit method if invalid number
+            }
+
+            // Proceed if the input is valid
+            Journal journal = new Journal();
+            journal.setTitle(title);
+            journal.setPublishedYear(publishedYear);
+            journal.setIssn(issn);
+            journal.setPublisher(publisher);
+
+            journalDAO.addJournal(journal);  // Add the journal to the database
+            loadJournals();  // Reload the journal list (if needed)
+
+            // Clear the fields
+            clearJournalFields();
+
+            // Show a success message to the user
+            showInfo("Journal added successfully!");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showError("An error occurred while adding the journal.");
+        }
+    }
+
+    // Method to clear all input fields
+    private void clearJournalFields() {
+        journalTitleTextField.clear();
+        publishedYearField.clear();
+        issnField.clear();
+        publisherField.clear();
+    }
+
+    // Method to show an error alert
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setContentText(message);
         alert.show();
     }
 
+    // Method to show an informational alert
     private void showInfo(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText(message);
@@ -566,8 +688,6 @@ public class BookController {
         authorField.clear();
         isbnField.clear();
         yearField.clear();
-        borrowPatronIdField.clear();
-        borrowDueDateField.clear();
         quantityField.clear();
     }
 }
