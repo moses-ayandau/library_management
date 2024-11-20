@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="10" alignment="CENTER" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.demo.views.ReservationController">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <GridPane hgap="10" vgap="10">
+        <padding>
+            <Insets top="10" right="10" bottom="10" left="10"/>
+        </padding>
+
+        <Label text="Patron ID:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <TextField fx:id="patronIdField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+        <Label text="Book ID:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <TextField fx:id="bookIdField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+        <Label text="Due Date:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <DatePicker fx:id="dueDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+        <Label text="Status:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+        <ComboBox fx:id="statusComboBox" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+    </GridPane>
+
+    <HBox spacing="10" alignment="CENTER">
+        <Button text="Create Reservation" onAction="#handleCreateReservation"/>
+        <Button text="Update Status" onAction="#handleUpdateReservationStatus"/>
+        <Button text="Delete Reservation" onAction="#handleDeleteReservation"/>
+    </HBox>
+
+    <TableView fx:id="reservationTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="idColumn" text="ID" prefWidth="50"/>
+            <TableColumn fx:id="patronIdColumn" text="Patron ID" prefWidth="100"/>
+            <TableColumn fx:id="bookIdColumn" text="Book ID" prefWidth="100"/>
+            <TableColumn fx:id="dateColumn" text="Date" prefWidth="150"/>
+            <TableColumn fx:id="statusColumn" text="Status" prefWidth="100"/>
+            <TableColumn fx:id="dueDateColumn" text="Due Date" prefWidth="150"/>
+        </columns>
+    </TableView>
+
+</VBox>

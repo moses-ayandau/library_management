@@ -2,6 +2,7 @@ package org.example.demo.dao;
 
 
 
+import org.example.demo.dao.interfaces.ITransaction;
 import org.example.demo.entity.Transaction;
 import org.example.demo.db.conn.DatabaseConnection;
 
@@ -9,10 +10,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TransactionDAO {
+public class TransactionDAO implements ITransaction {
 
     public boolean createTransaction(Transaction transaction) {
-        String sql = "INSERT INTO transaction (book_id, patron_id, borrowed_date, due_date) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO transaction (bookID, userID, borrowedDate, dueDate) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -39,7 +40,7 @@ public class TransactionDAO {
 
     // Return a book
     public boolean returnBook(int transactionId, Date returnDate) {
-        String sql = "UPDATE transaction SET returned_date = ? WHERE id = ?";
+        String sql = "UPDATE transaction SET returnedDate = ? WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -54,10 +55,10 @@ public class TransactionDAO {
         return false;
     }
 
-    // Get all active transactions (not returned)
+
     public List<Transaction> getActiveTransactions() {
         List<Transaction> transactions = new ArrayList<>();
-        String sql = "SELECT * FROM transaction WHERE returned_date IS NULL";
+        String sql = "SELECT * FROM transaction WHERE returnedDate IS NULL";
 
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement();
@@ -65,11 +66,12 @@ public class TransactionDAO {
 
             while (rs.next()) {
                 Transaction transaction = new Transaction();
-                transaction.setID(rs.getInt("id"));
-                transaction.setBookID(rs.getInt("book_id"));
-                transaction.setPatronID(rs.getInt("patron_id"));
-                transaction.setBorrowedDate(rs.getDate("borrowed_date"));
-                transaction.setDueDate(rs.getDate("due_date"));
+                transaction.setID(rs.getInt("ID"));
+                transaction.setBookID(rs.getInt("bookId"));
+                transaction.setPatronID(rs.getInt("userId"));
+                transaction.setBorrowedDate(rs.getDate("borrowedDate"));
+                transaction.setDueDate(rs.getDate("dueDate"));
+
                 transactions.add(transaction);
             }
         } catch (SQLException e) {

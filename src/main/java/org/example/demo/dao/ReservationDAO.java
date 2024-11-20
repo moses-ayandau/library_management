@@ -1,6 +1,7 @@
 package org.example.demo.dao;
 
 
+import org.example.demo.dao.interfaces.IReservationDAO;
 import org.example.demo.entity.Reservation;
 import org.example.demo.entity.ReservationStatus;
 import org.example.demo.db.conn.DatabaseConnection;
@@ -9,10 +10,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReservationDAO {
+public class ReservationDAO implements IReservationDAO {
 
 
-    public void addReservation(Reservation reservation) throws SQLException {
+    public boolean addReservation(Reservation reservation) throws SQLException {
         String sql = "INSERT INTO reservation (userID, bookID, reservedDate, reservedStatus, dueDate) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection connection = DatabaseConnection.getConnection();
@@ -29,6 +30,7 @@ public class ReservationDAO {
         catch (Exception e){
             System.out.println(e);
         }
+        return false;
     }
 
     public Reservation getReservationById(int id) throws SQLException {
@@ -92,8 +94,6 @@ public class ReservationDAO {
         reservation.setPatronID(resultSet.getInt("userID"));
         reservation.setBookID(resultSet.getInt("bookID"));
         reservation.setReservedDate(resultSet.getDate("reservedDate"));
-        reservation.setStatus(ReservationStatus.valueOf(resultSet.getString("reservedStatus")));
-        reservation.setDueDate(resultSet.getDate("dueDate"));
         return reservation;
     }
 

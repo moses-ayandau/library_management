@@ -1,17 +1,44 @@
 package org.example.demo.entity;
 
+import javafx.collections.ObservableList;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 public class User {
+
+
      int ID;
      String name;
      String email;
      String phone;
      String address;
      Role role;
+     String password;
+
+     private List<Reservation> reservations = new ArrayList<>();
+
+
      List<Book> books = new ArrayList<>();
+
+
+     public List<Reservation> getReservations() {
+          return reservations;
+     }
+
+     public void setReservations(List<Reservation> reservations) {
+          this.reservations = reservations;
+     }
+
+     public String getPassword() {
+          return password;
+     }
+
+     public void setPassword(String password) {
+          this.password = password;
+     }
+
 
 
 
@@ -23,7 +50,13 @@ public class User {
           this.address = address;
           this.role = role;
      }
+     public void setID(int ID) {
+          this.ID = ID;
+     }
 
+     public int getID() {
+          return ID;
+     }
 
      public String getAddress() {
           return address;
@@ -77,4 +110,6 @@ public class User {
      public void setRole(Role role) {
           this.role = role;
      }
+
+
 }

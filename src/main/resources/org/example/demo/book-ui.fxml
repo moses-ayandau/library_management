@@ -1,45 +1,116 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.demo.views.BookController" spacing="10">
-    <!-- Add padding -->
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.demo.views.BookController" spacing="20">
+    <!-- Add padding to the whole VBox -->
     <padding>
-        <Insets top="10" right="10" bottom="10" left="10"/>
+        <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
 
-    <!-- View All Books Section -->
-    <Button text="View All Books" onAction="#viewAllBooks"/>
-    <TableView fx:id="bookTable" prefHeight="300">
-        <!-- Define Table Columns -->
-        <columns>
-            <TableColumn text="ID" fx:id="colId" prefWidth="50"/>
-            <TableColumn text="Title" fx:id="colTitle" prefWidth="150"/>
-            <TableColumn text="Description" fx:id="colDescription" prefWidth="200"/>
-            <TableColumn text="Author" fx:id="colAuthor" prefWidth="100"/>
-            <TableColumn text="ISBN" fx:id="colIsbn" prefWidth="100"/>
-            <TableColumn text="Year" fx:id="colYear" prefWidth="80"/>
-<!--            <TableColumn text="Quantity" fx:id="colQuantity" prefWidth="80"/>-->
-            <TableColumn text="Available" fx:id="colAvailable" prefWidth="100"/>
-        </columns>
-    </TableView>
+    <!-- HBox for side-by-side layout (Left for form, Right for book display) -->
+    <HBox spacing="30" fillHeight="true" alignment="CENTER">
+        <!-- Left side for the form to add a book -->
+        <VBox spacing="15" prefWidth="300" alignment="CENTER_LEFT" style="-fx-background-color: #f4f4f9; -fx-border-radius: 10; -fx-padding: 15;">
+            <Label text="Add New Book" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #333;"/>
+            <TextField fx:id="titleField" promptText="Title" style="-fx-border-radius: 5; -fx-padding: 10; -fx-font-size: 14px;"/>
+            <TextField fx:id="descriptionField" promptText="Description" style="-fx-border-radius: 5; -fx-padding: 10; -fx-font-size: 14px;"/>
+            <TextField fx:id="authorField" promptText="Author" style="-fx-border-radius: 5; -fx-padding: 10; -fx-font-size: 14px;"/>
+            <TextField fx:id="isbnField" promptText="ISBN" style="-fx-border-radius: 5; -fx-padding: 10; -fx-font-size: 14px;"/>
+            <TextField fx:id="yearField" promptText="Year" style="-fx-border-radius: 5; -fx-padding: 10; -fx-font-size: 14px;"/>
+            <TextField fx:id="quantityField" promptText="Quantity" style="-fx-border-radius: 5; -fx-padding: 10; -fx-font-size: 14px;"/>
+            <Button text="Add Book" onAction="#addBook" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-border-radius: 5; -fx-cursor: hand;" />
+        </VBox>
 
-    <!-- Add Book Section -->
-    <HBox spacing="10">
-        <TextField fx:id="titleField" promptText="Title"/>
-        <TextField fx:id="descriptionField" promptText="Description"/>
-        <TextField fx:id="authorField" promptText="Author"/>
-        <TextField fx:id="isbnField" promptText="ISBN"/>
-        <TextField fx:id="yearField" promptText="Year"/>
-        <CheckBox fx:id="availableCheckBox" text="Available"/>
-        <Button text="Add Book" onAction="#addBook"/>
-    </HBox>
+        <!-- Right side for the TableView to display books -->
+        <VBox spacing="20" HBox.hgrow="ALWAYS" alignment="TOP_CENTER" style="-fx-background-color: #ffffff; -fx-border-radius: 10; -fx-padding: 15; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.5, 0, 5)">
+            <TabPane fx:id="tabPane" prefWidth="600" prefHeight="600">
+                <!-- Tab for View Books Section -->
+                <Tab text="View Books" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333;">
+                    <VBox spacing="15">
+                        <!-- Retrieve Book by ID Section -->
+                        <HBox spacing="10" alignment="BASELINE_RIGHT">
+                            <TextField fx:id="bookIdField" promptText="Book ID" style="-fx-border-radius: 5; -fx-padding: 10; -fx-font-size: 14px;"/>
+                            <Button text="Search Book" onAction="#getBookById" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10 20; -fx-border-radius: 5; -fx-cursor: hand;"/>
+                        </HBox>
 
-    <!-- Retrieve Book by ID Section -->
-    <HBox spacing="10">
-        <TextField fx:id="bookIdField" promptText="Book ID"/>
-        <Button text="Get Book" onAction="#getBookById"/>
+                        <!-- Book Table -->
+                        <TableView fx:id="bookTable" prefHeight="300" style="-fx-background-color: #f4f4f9; -fx-border-radius: 10;">
+                            <columns>
+                                <TableColumn text="ID" fx:id="colId" prefWidth="50"/>
+                                <TableColumn text="Title" fx:id="colTitle" prefWidth="150"/>
+                                <TableColumn text="Description" fx:id="colDescription" prefWidth="200"/>
+                                <TableColumn text="Author" fx:id="colAuthor" prefWidth="100"/>
+                                <TableColumn text="ISBN" fx:id="colIsbn" prefWidth="100"/>
+                                <TableColumn fx:id="colQuantity" text="Quantity"/>
+                                <TableColumn text="Year" fx:id="colYear" prefWidth="80"/>
+                                <!-- Action buttons column -->
+                                <TableColumn text="Actions" fx:id="colActions" prefWidth="150"/>
+                            </columns>
+                        </TableView>
+                    </VBox>
+                </Tab>
+                <Tab text="Borrowed Books" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333;">
+                    <VBox spacing="15">
+                        <!-- Retrieve Book by ID Section -->
+
+
+                        <!-- Book Table -->
+                        <TableView fx:id="borrowedTable" prefHeight="300" style="-fx-background-color: #f4f4f9; -fx-border-radius: 10;">
+                            <columns>
+                                <TableColumn text="ID" fx:id="bookID" prefWidth="30"/>
+                                <TableColumn text="Title" fx:id="patronID" prefWidth="30"/>
+                                <TableColumn text="borrowed Date" fx:id="borrowedDate" prefWidth="100"/>
+                                <TableColumn text="Due Date" fx:id="dueDate" prefWidth="100"/>
+                                <TableColumn text="Return" fx:id="returnCol" prefWidth="100"/>
+
+                            </columns>
+                        </TableView>
+                    </VBox>
+                </Tab>
+
+                <Tab text="Reserved Books" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333;">
+                    <VBox spacing="15">
+                        <!-- Retrieve Book by ID Section -->
+
+
+                        <!-- Book Table -->
+                        <TableView fx:id="reservedTable" prefHeight="300" style="-fx-background-color: #f4f4f9; -fx-border-radius: 10;">
+                            <columns>
+                                <TableColumn text="Book ID" fx:id="reservedBookID" prefWidth="150"/>
+                                <TableColumn text="Patron ID" fx:id="reservedPatronID" prefWidth="150"/>
+                                <TableColumn text="Reserved Date" fx:id="reservedDate" prefWidth="150"/>
+                                <TableColumn text="Return" fx:id="Clear" prefWidth="150"/>
+
+                            </columns>
+                        </TableView>
+                    </VBox>
+                </Tab>
+
+                <Tab text="Users with Reservation" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333;">
+                    <VBox spacing="15">
+                        <!-- Retrieve Book by ID Section -->
+
+
+                        <!-- Book Table -->
+                        <TableView fx:id="userWithReservationTable" prefHeight="300" style="-fx-background-color: #f4f4f9; -fx-border-radius: 10;">
+                            <columns>
+                                <TableColumn text="User ID" fx:id="userID" prefWidth="40"/>
+                                <TableColumn text="User Name" fx:id="userName" prefWidth="90"/>
+                                <TableColumn text="Email" fx:id="userEmail" prefWidth="150"/>
+                                <TableColumn text="Phone" fx:id="userPhone" prefWidth="100"/>
+                                <TableColumn text="Address" fx:id="userAddress" prefWidth="150" />
+                                <TableColumn text="Book Id" fx:id="userBookID" prefWidth="100"/>
+                                <TableColumn text="Reserved Date" fx:id="reservedDateUser" prefWidth="100"/>
+
+
+                            </columns>
+                        </TableView>
+                    </VBox>
+                </Tab>
+
+            </TabPane>
+        </VBox>
     </HBox>
 </VBox>
