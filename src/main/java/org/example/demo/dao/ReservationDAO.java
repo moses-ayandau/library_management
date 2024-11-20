@@ -13,6 +13,13 @@ import java.util.List;
 public class ReservationDAO implements IReservationDAO {
 
 
+    /**
+     * Adds a new reservation to the database.
+     *
+     * @param reservation the Reservation object containing the details of the reservation.
+     * @return true if the reservation was successfully added, false otherwise.
+     * @throws SQLException if a database error occurs.
+     */
     public boolean addReservation(Reservation reservation) throws SQLException {
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement("INSERT INTO reservation (bookID, userID, reservedDate) VALUES (?, ?, ?)")) {
@@ -29,12 +36,18 @@ public class ReservationDAO implements IReservationDAO {
         }
     }
 
-
+    /**
+     * Retrieves a reservation by its ID.
+     *
+     * @param id the ID of the reservation.
+     * @return the Reservation object if found, or null if not found.
+     * @throws SQLException if a database error occurs.
+     */
     public Reservation getReservationById(int id) throws SQLException {
         String sql = "SELECT * FROM reservation WHERE ID = ?";
         Reservation reservation = null;
 
-        try (Connection connection =DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, id);
@@ -47,17 +60,30 @@ public class ReservationDAO implements IReservationDAO {
         return reservation;
     }
 
+    /**
+     * Updates the status of a reservation in the database.
+     *
+     * @param reservation the Reservation object containing the updated status.
+     * @throws SQLException if a database error occurs.
+     */
     public void updateReservationStatus(Reservation reservation) throws SQLException {
-        String sql = "UPDATE reservation SET  reservedStatus = ? WHERE ID = ?";
+        String sql = "UPDATE reservation SET reservedStatus = ? WHERE ID = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, reservation.getStatus().toString());
+            statement.setInt(2, reservation.getID());
 
             statement.executeUpdate();
         }
     }
 
+    /**
+     * Deletes a reservation from the database by its ID.
+     *
+     * @param id the ID of the reservation to be deleted.
+     * @throws SQLException if a database error occurs.
+     */
     public void deleteReservation(int id) throws SQLException {
         String sql = "DELETE FROM reservation WHERE ID = ?";
 
@@ -69,6 +95,12 @@ public class ReservationDAO implements IReservationDAO {
         }
     }
 
+    /**
+     * Retrieves all reservations from the database.
+     *
+     * @return a list of Reservation objects representing all reservations in the database.
+     * @throws SQLException if a database error occurs.
+     */
     public List<Reservation> getAllReservations() throws SQLException {
         List<Reservation> reservations = new ArrayList<>();
         String sql = "SELECT * FROM reservation";
@@ -85,6 +117,13 @@ public class ReservationDAO implements IReservationDAO {
         return reservations;
     }
 
+    /**
+     * Maps a ResultSet row to a Reservation object.
+     *
+     * @param resultSet the ResultSet containing reservation data.
+     * @return a Reservation object populated with the data from the ResultSet.
+     * @throws SQLException if a database access error occurs.
+     */
     private Reservation mapResultSetToReservation(ResultSet resultSet) throws SQLException {
         Reservation reservation = new Reservation();
         reservation.setID(resultSet.getInt("ID"));
@@ -94,10 +133,18 @@ public class ReservationDAO implements IReservationDAO {
         return reservation;
     }
 
+    /**
+     * Retrieves a reservation by its ID (alternative implementation).
+     *
+     * @param id the ID of the reservation.
+     * @return the Reservation object if found, or null if not found.
+     * @throws SQLException if a database error occurs.
+     */
     public Reservation getReservationByID(int id) throws SQLException {
         String sql = "SELECT * FROM reservation WHERE ID = ?";
-        try (   Connection connection = DatabaseConnection.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -113,4 +160,5 @@ public class ReservationDAO implements IReservationDAO {
         }
         return null;
     }
+
 }

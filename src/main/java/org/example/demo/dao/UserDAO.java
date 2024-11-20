@@ -13,10 +13,14 @@ import java.util.List;
 public class UserDAO implements IUserDAO {
 
 
-    // Method to create a user
+    /**
+     * Creates a new user in the database.
+     *
+     * @param user the User object containing the user's details.
+     * @return true if the user was successfully created, false otherwise.
+     */
     public boolean createUser(User user) {
         String sql = "INSERT INTO user (name, email, phone, address, role, password) VALUES (?, ?, ?, ?, ?, ?)";
-
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -24,7 +28,7 @@ public class UserDAO implements IUserDAO {
             ps.setString(2, user.getEmail());
             ps.setString(3, user.getPhone());
             ps.setString(4, user.getAddress());
-            ps.setString(5, user.getRole().name());
+            ps.setString(5, user.getRole().name()); // Assuming Role is an enum
             ps.setString(6, user.getPassword());
 
             int rowsAffected = ps.executeUpdate();
@@ -35,9 +39,15 @@ public class UserDAO implements IUserDAO {
         }
     }
 
+    /**
+     * Authenticates a user by verifying their email and password.
+     *
+     * @param email the user's email address.
+     * @param password the user's password.
+     * @return a User object if authentication is successful, or null if failed.
+     */
     public User loginUser(String email, String password) {
         String sql = "SELECT * FROM user WHERE email = ? AND password = ?";
-
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -52,37 +62,45 @@ public class UserDAO implements IUserDAO {
                 user.setEmail(rs.getString("email"));
                 user.setPhone(rs.getString("phone"));
                 user.setAddress(rs.getString("address"));
-                user.setRole(Role.valueOf(rs.getString("role")));  // Assuming Role is an enum
+                user.setRole(Role.valueOf(rs.getString("role"))); // Assuming Role is an enum
                 user.setPassword(rs.getString("password"));
                 return user;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 
-public List<User> getAllUsers() {
-    String sql = "SELECT * FROM user";
-    List<User> users = new ArrayList<>();
+    /**
+     * Retrieves all users from the database.
+     *
+     * @return a list of User objects representing all users in the database.
+     */
+    public List<User> getAllUsers() {
+        String sql = "SELECT * FROM user";
+        List<User> users = new ArrayList<>();
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-    try (Connection conn = DatabaseConnection.getConnection();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
-
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            User user = mapResultSetToUser(rs); // Map result set to User object
-            users.add(user);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                User user = mapResultSetToUser(rs); // Map result set to User object
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return users;
     }
 
-    return users;
-}
-
-
+    /**
+     * Maps a ResultSet row to a User object.
+     *
+     * @param rs the ResultSet containing user data.
+     * @return a User object populated with the data from the ResultSet.
+     * @throws SQLException if a database access error occurs.
+     */
     private User mapResultSetToUser(ResultSet rs) throws SQLException {
         User user = new User();
         user.setPatronID(rs.getInt("id"));
@@ -90,7 +108,8 @@ public List<User> getAllUsers() {
         user.setEmail(rs.getString("email"));
         user.setPhone(rs.getString("phone"));
         user.setAddress(rs.getString("address"));
-        user.setRole(Role.valueOf(rs.getString("role")));
+        user.setRole(Role.valueOf(rs.getString("role"))); // Assuming Role is an enum
         return user;
     }
+
 }
