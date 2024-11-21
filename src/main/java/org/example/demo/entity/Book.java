@@ -1,32 +1,16 @@
 package org.example.demo.entity;
 
 
-import java.sql.Date;
 
 public class Book extends LibraryResource{
-    public int ID;
     private String description;
     private String author;
     private String isbn;
-    private boolean available;
     private int quantity;
 
     public Book(int bookId) {
         super();
     }
-
-
-    public int getID() {
-        return ID;
-    }
-
-    public void setID(int ID) {
-        this.ID = ID;
-    }
-
-
-
-
 
     public Book(){
 
@@ -39,7 +23,6 @@ public class Book extends LibraryResource{
         this.author = author;
         this.isbn = isbn;
         this.publishedYear = publishedYear;
-        this.available = available;
     }
 
 
@@ -67,13 +50,7 @@ public class Book extends LibraryResource{
         this.isbn = isbn;
     }
 
-    public boolean isAvailable() {
-        return available;
-    }
 
-    public void setAvailable(boolean available) {
-        this.available = available;
-    }
     public int getQuantity() {
         return quantity;
     }
@@ -88,8 +65,7 @@ public class Book extends LibraryResource{
                 "\nTitle: " + title +
                 "\nAuthor: " + author +
                 "\nISBN: " + isbn +
-                "\nPublished Date: " + publishedYear +
-                "\nAvailable: " + available + "\n";
+                "\nPublished Date: " + publishedYear;
     }
 
 

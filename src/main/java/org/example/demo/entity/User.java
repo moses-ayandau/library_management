@@ -4,23 +4,24 @@ import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 
 public class User {
 
 
-     int ID;
-     String name;
-     String email;
-     String phone;
-     String address;
-     Role role;
-     String password;
+     private int ID;
+     private String name;
+     private String email;
+     private String phone;
+     private String address;
+     private Role role;
+     private String password;
 
      private List<Reservation> reservations = new ArrayList<>();
 
 
-     List<Book> books = new ArrayList<>();
+     List<Book> books = new LinkedList<>();
 
 
      public List<Reservation> getReservations() {

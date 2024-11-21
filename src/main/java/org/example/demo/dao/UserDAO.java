@@ -2,13 +2,13 @@ package org.example.demo.dao;
 
 import org.example.demo.dao.interfaces.IUserDAO;
 import org.example.demo.db.conn.DatabaseConnection;
-import org.example.demo.entity.Book;
 import org.example.demo.entity.User;
 import org.example.demo.entity.Role;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class UserDAO implements IUserDAO {
 

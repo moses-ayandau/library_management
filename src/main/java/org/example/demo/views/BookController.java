@@ -22,6 +22,8 @@ import org.example.demo.entity.*;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Queue;
+import java.util.Stack;
 
 public class BookController {
 
@@ -134,18 +136,19 @@ public class BookController {
         if (welcomeLabel != null) {
             welcomeLabel.setText("Welcome, " + user.getName());
         } else {
-            System.err.println("welcomeLabel is null!");
+//            System.err.println("welcomeLabel is null!");
         }
     }
 
     @FXML
-    public void initialize() {
+    public void initialize() throws SQLException {
         setupTableColumns();
         setupReturnButton();
         loadBooks();
         loadBorrowedBooks();
         loadReservations();
         loadUsersWithReservations();
+        loadJournals();
     }
 
     private void setupTableColumns() {
@@ -305,7 +308,7 @@ public class BookController {
 
     private void loadBooks() {
         try {
-            List<Book> books = bookDAO.getAllBooks();
+            Stack<Book> books = (Stack<Book>) bookDAO.getAllBooks();
             ObservableList<Book> bookList = FXCollections.observableArrayList(books);
             bookTable.setItems(bookList);
         } catch (SQLException e) {
@@ -331,7 +334,7 @@ public class BookController {
 
     private void loadReservations() {
         try {
-            List<Reservation> reservations = reservationDAO.getAllReservations();
+            Queue<Reservation> reservations = reservationDAO.getAllReservations();
             reservationsList = FXCollections.observableArrayList(reservations);
             reservedTable.setItems(reservationsList);
         } catch (SQLException e) {

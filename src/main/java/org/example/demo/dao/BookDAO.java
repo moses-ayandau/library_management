@@ -9,17 +9,18 @@ import org.example.demo.entity.Transaction;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class BookDAO implements IBookDAO {
 
     /**
      * Retrieves all books from the database.
      *
-     * @return a list of Book objects representing all books in the database.
+     * @return a stack of Book objects representing all books in the database.
      * @throws SQLException if a database access error occurs.
      */
-    public List<Book> getAllBooks() throws SQLException {
-        List<Book> books = new ArrayList<>();
+    public Stack<Book> getAllBooks() throws SQLException {
+        Stack<Book> books = new Stack<>();
         String query = "SELECT * FROM Book";
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement();
@@ -32,8 +33,8 @@ public class BookDAO implements IBookDAO {
                 book.setAuthor(rs.getString("Author"));
                 book.setIsbn(rs.getString("ISBN"));
                 book.setPublishedYear(rs.getInt("PublishedYear"));
-                book.setQuantity(rs.getInt("quantity"));
-                books.add(book);
+                book.setQuantity(rs.getInt("Quantity"));
+                books.push(book); // Add the book to the stack
             }
         } catch (Exception e) {
             System.out.println("An error occurred " + e);
