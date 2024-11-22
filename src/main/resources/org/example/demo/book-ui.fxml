@@ -3,7 +3,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.demo.views.BookController" spacing="20">
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.demo.controller.BookController" spacing="20">
     <!-- Add padding to the whole VBox -->
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>

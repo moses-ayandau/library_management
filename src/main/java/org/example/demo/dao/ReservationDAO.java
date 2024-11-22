@@ -7,8 +7,8 @@ import org.example.demo.entity.ReservationStatus;
 import org.example.demo.db.conn.DatabaseConnection;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class ReservationDAO implements IReservationDAO {
 
@@ -95,15 +95,16 @@ public class ReservationDAO implements IReservationDAO {
         }
     }
 
+
     /**
      * Retrieves all reservations from the database.
      *
-     * @return a list of Reservation objects representing all reservations in the database.
+     * @return a queue of Reservation objects representing all reservations in the database.
      * @throws SQLException if a database error occurs.
      */
-    public List<Reservation> getAllReservations() throws SQLException {
-        List<Reservation> reservations = new ArrayList<>();
-        String sql = "SELECT * FROM reservation";
+    public Queue<Reservation> getAllReservations() throws SQLException {
+        Queue<Reservation> reservations = new LinkedList<>();
+        String sql = "SELECT * FROM reservation ORDER by reservedDate";
 
         try (Connection connection = DatabaseConnection.getConnection();
              Statement statement = connection.createStatement();
@@ -111,7 +112,7 @@ public class ReservationDAO implements IReservationDAO {
 
             while (resultSet.next()) {
                 Reservation reservation = mapResultSetToReservation(resultSet);
-                reservations.add(reservation);
+                reservations.add(reservation); // Add each reservation to the queue
             }
         }
         return reservations;

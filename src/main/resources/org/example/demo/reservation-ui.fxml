@@ -5,7 +5,7 @@
 <?import javafx.geometry.Insets?>
 
 <VBox spacing="10" alignment="CENTER" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="org.example.demo.views.ReservationController">
+      fx:controller="org.example.demo.controller.ReservationController">
 
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>

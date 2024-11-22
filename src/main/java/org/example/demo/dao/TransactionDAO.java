@@ -2,7 +2,8 @@ package org.example.demo.dao;
 
 
 
-import org.example.demo.dao.interfaces.ITransaction;
+
+import org.example.demo.dao.interfaces.ITransactionDAO;
 import org.example.demo.entity.Transaction;
 import org.example.demo.db.conn.DatabaseConnection;
 
@@ -10,7 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TransactionDAO implements ITransaction {
+public class TransactionDAO implements ITransactionDAO {
 
     public boolean createTransaction(Transaction transaction) {
         String sql = "INSERT INTO transaction (bookID, userID, borrowedDate, dueDate) VALUES (?, ?, ?, ?)";
