@@ -104,7 +104,7 @@ public class ReservationDAO implements IReservationDAO {
      */
     public Queue<Reservation> getAllReservations() throws SQLException {
         Queue<Reservation> reservations = new LinkedList<>();
-        String sql = "SELECT * FROM reservation";
+        String sql = "SELECT * FROM reservation ORDER by reservedDate";
 
         try (Connection connection = DatabaseConnection.getConnection();
              Statement statement = connection.createStatement();

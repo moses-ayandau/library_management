@@ -5,7 +5,7 @@ module org.example.demo {
     requires jbcrypt;
     requires io.github.cdimascio.dotenv.java;
 
-    opens org.example.demo.views to javafx.fxml;
+    opens org.example.demo.controller to javafx.fxml;
 
 
     opens org.example.demo.entity to javafx.base;
@@ -13,7 +13,7 @@ module org.example.demo {
 
 
     exports org.example.demo;
-    exports org.example.demo.views;
+    exports org.example.demo.controller;
     exports org.example.demo.entity;
     exports org.example.demo.dao;
     exports org.example.demo.dto;

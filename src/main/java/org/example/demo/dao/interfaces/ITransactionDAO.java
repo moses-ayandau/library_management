@@ -5,7 +5,7 @@ import org.example.demo.entity.Transaction;
 import java.sql.Date;
 import java.util.List;
 
-public interface ITransaction {
+public interface ITransactionDAO {
     boolean createTransaction(Transaction transaction);
     boolean returnBook(int transactionId, Date returnDate);
     List<Transaction> getActiveTransactions();
