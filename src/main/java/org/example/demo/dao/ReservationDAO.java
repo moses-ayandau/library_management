@@ -104,7 +104,7 @@ public class ReservationDAO implements IReservationDAO {
      */
     public Queue<Reservation> getAllReservations() throws SQLException {
         Queue<Reservation> reservations = new LinkedList<>();
-        String sql = "SELECT * FROM reservation ORDER by reservedDate";
+        String sql = "SELECT * FROM reservation";
 
         try (Connection connection = DatabaseConnection.getConnection();
              Statement statement = connection.createStatement();
@@ -112,7 +112,7 @@ public class ReservationDAO implements IReservationDAO {
 
             while (resultSet.next()) {
                 Reservation reservation = mapResultSetToReservation(resultSet);
-                reservations.add(reservation); // Add each reservation to the queue
+                reservations.add(reservation);
             }
         }
         return reservations;

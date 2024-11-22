@@ -18,7 +18,7 @@ public class BookDAO implements IBookDAO {
      */
     public Stack<Book> getAllBooks() throws SQLException {
         Stack<Book> books = new Stack<>();
-        String query = "SELECT * FROM Book";
+        String query = "SELECT * FROM Book ";
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
@@ -31,7 +31,7 @@ public class BookDAO implements IBookDAO {
                 book.setIsbn(rs.getString("ISBN"));
                 book.setPublishedYear(rs.getInt("PublishedYear"));
                 book.setQuantity(rs.getInt("Quantity"));
-                books.push(book); // Add the book to the stack
+                books.push(book);
             }
         } catch (Exception e) {
             System.out.println("An error occurred " + e);
