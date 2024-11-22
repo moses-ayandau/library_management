@@ -9,6 +9,7 @@ import org.example.demo.db.conn.DatabaseConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class TransactionDAO implements ITransactionDAO {
@@ -58,7 +59,7 @@ public class TransactionDAO implements ITransactionDAO {
 
 
     public List<Transaction> getActiveTransactions() {
-        List<Transaction> transactions = new ArrayList<>();
+        List<Transaction> transactions = new LinkedList<>();
         String sql = "SELECT * FROM transaction WHERE returnedDate IS NULL";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -80,6 +81,7 @@ public class TransactionDAO implements ITransactionDAO {
         }
         return transactions;
     }
+
 
     // Get transaction by ID
     public Transaction getTransactionById(int id) {
