@@ -10,6 +10,7 @@ public class Book extends LibraryResource{
 
     public Book(int bookId) {
         super();
+        this.ID = bookId;
     }
 
     public Book(){
@@ -24,6 +25,7 @@ public class Book extends LibraryResource{
         this.isbn = isbn;
         this.publishedYear = publishedYear;
     }
+
 
 
     public String getDescription() {

@@ -23,6 +23,9 @@ public class User {
 
      List<Book> books = new LinkedList<>();
 
+     public User(String johnDoe, String mail, String number, String s, String password123, Role role) {
+     }
+
 
      public List<Reservation> getReservations() {
           return reservations;
@@ -90,16 +93,6 @@ public class User {
      public void setName(String name) {
           this.name = name;
      }
-
-     public int getPatronID() {
-          return ID;
-     }
-
-     public void setPatronID(int patronID) {
-          this.ID = patronID;
-     }
-
-
      public Role getRole() {
           return this.role;
      }

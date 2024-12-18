@@ -53,9 +53,6 @@ public class Transaction {
         this.bookID = bookID;
     }
 
-    public int getMemberID() {
-        return patronID;
-    }
 
     public void setMemberID(int memberID) {
         this.patronID = memberID;

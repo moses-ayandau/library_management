@@ -26,7 +26,7 @@ import java.util.Stack;
 
 public class BookController {
 
-    private final IBookDAO bookDAO = new BookDAO();
+    public IBookDAO bookDAO = new BookDAO();
     private final ITransactionDAO transactionDAO = new TransactionDAO();
     private final IReservationDAO reservationDAO = new ReservationDAO();
     private final IJournalDAO journalDAO = new JournalDAO();
@@ -99,29 +99,39 @@ public class BookController {
     @FXML  public TableColumn<User, String> address;
 
     @FXML
-    private TextField bookIdField;
+    TextField bookIdField;
 
     @FXML
-    private TableView<Book> bookTable;
+    public TableView<Book> bookTable;
     @FXML
-    private TableColumn<Book, Integer> colId;
+    TableColumn<Book, Integer> colId;
     @FXML
-    private TableColumn<Book, String> colTitle;
+    TableColumn<Book, String> colTitle;
     @FXML
-    private TableColumn<Book, String> colDescription;
+    TableColumn<Book, String> colDescription;
     @FXML
-    private TableColumn<Book, String> colAuthor;
+    TableColumn<Book, String> colAuthor;
     @FXML
-    private TableColumn<Book, String> colIsbn;
+    TableColumn<Book, String> colIsbn;
     @FXML
-    private TableColumn<Book, Integer> colQuantity;
+    TableColumn<Book, Integer> colQuantity;
     @FXML
-    private TableColumn<Book, Date> colYear;
+    TableColumn<Book, Date> colYear;
     @FXML
     private TableColumn<Book, Void> colActions;
 
     @FXML
-    private TextField titleField, descriptionField, authorField, isbnField, yearField, quantityField;
+    TextField titleField;
+    @FXML
+    TextField descriptionField;
+    @FXML
+    TextField authorField;
+    @FXML
+    TextField isbnField;
+    @FXML
+    TextField yearField;
+    @FXML
+    TextField quantityField;
     @FXML
     private CheckBox availableCheckBox;
     @FXML
@@ -150,7 +160,7 @@ public class BookController {
         loadJournals();
     }
 
-    private void setupTableColumns() {
+    private void setupTableColumns() throws SQLException {
         // Book table
         colId.setCellValueFactory(new PropertyValueFactory<>("ID"));
         colTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -199,7 +209,7 @@ public class BookController {
         setupActionButtons();
     }
 
-    private void setupActionButtons() {
+    public void setupActionButtons() {
         colActions.setCellFactory(param -> new TableCell<Book, Void>() {
             private final Button borrowButton = createStyledButton("Borrow", "#4CAF50");
             private final Button reserveButton = createStyledButton("Reserve", "#FFC107");
@@ -264,7 +274,7 @@ public class BookController {
         deleteStage.setScene(scene);
         deleteStage.showAndWait();
     }
-    private void deleteBook(Book book) throws SQLException {
+    public void deleteBook(Book book) throws SQLException {
         if (bookDAO.deleteBook(book.getID())) {
             loadBooks();
             showInfo("Book deleted successfully: " + book.getTitle());
@@ -305,7 +315,7 @@ public class BookController {
         });
     }
 
-    private void loadBooks() {
+    public void loadBooks() {
         try {
             Stack<Book> books = (Stack<Book>) bookDAO.getAllBooks();
             ObservableList<Book> bookList = FXCollections.observableArrayList(books);
@@ -315,7 +325,7 @@ public class BookController {
         }
     }
 
-    private void loadUsers() {
+    private void loadUsers() throws SQLException {
         ObservableList<User> users = FXCollections.observableArrayList();
 
         // Fetch the users from the DAO (add logic in the DAO to get all users)
@@ -325,7 +335,7 @@ public class BookController {
         userTableView.setItems(users);
     }
 
-    private void loadBorrowedBooks() {
+    private void loadBorrowedBooks() throws SQLException {
         List<Transaction> transactions = transactionDAO.getActiveTransactions();
         ObservableList<Transaction> transactionsList = FXCollections.observableArrayList(transactions);
         borrowedTable.setItems(transactionsList);
@@ -376,7 +386,7 @@ public class BookController {
 
 
     @FXML
-    private void addBook() {
+    void addBook() {
         try {
             Book newBook = new Book();
             newBook.setTitle(titleField.getText());
@@ -614,7 +624,7 @@ private void loadJournals() throws SQLException {
 
     // Add a journal
     @FXML
-    private void addJournal() {
+    void addJournal() {
         try {
             String title = journalTitleTextField.getText();
             System.out.println(title);

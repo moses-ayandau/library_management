@@ -10,6 +10,9 @@ public class Reservation {
     private ReservationStatus status;
     private Date dueDate;
 
+
+
+
     public int getID() {
         return ID;
     }

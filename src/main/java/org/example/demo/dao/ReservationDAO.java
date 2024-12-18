@@ -29,12 +29,9 @@ public class ReservationDAO implements IReservationDAO {
             stmt.setDate(3, reservation.getReservedDate());
 
             return stmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            System.err.println("SQL Exception in addReservation: " + e.getMessage());
-            e.printStackTrace();
-            throw e;
         }
     }
+
 
     /**
      * Retrieves a reservation by its ID.
@@ -60,30 +57,6 @@ public class ReservationDAO implements IReservationDAO {
         return reservation;
     }
 
-    /**
-     * Updates the status of a reservation in the database.
-     *
-     * @param reservation the Reservation object containing the updated status.
-     * @throws SQLException if a database error occurs.
-     */
-    public void updateReservationStatus(Reservation reservation) throws SQLException {
-        String sql = "UPDATE reservation SET reservedStatus = ? WHERE ID = ?";
-
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, reservation.getStatus().toString());
-            statement.setInt(2, reservation.getID());
-
-            statement.executeUpdate();
-        }
-    }
-
-    /**
-     * Deletes a reservation from the database by its ID.
-     *
-     * @param id the ID of the reservation to be deleted.
-     * @throws SQLException if a database error occurs.
-     */
     public void deleteReservation(int id) throws SQLException {
         String sql = "DELETE FROM reservation WHERE ID = ?";
 
@@ -154,7 +127,6 @@ public class ReservationDAO implements IReservationDAO {
                 reservation.setPatronID(resultSet.getInt("patronID"));
                 reservation.setBookID(resultSet.getInt("bookID"));
                 reservation.setReservedDate(resultSet.getDate("date"));
-                reservation.setStatus(ReservationStatus.valueOf(resultSet.getString("status")));
                 reservation.setDueDate(resultSet.getDate("dueDate"));
                 return reservation;
             }

@@ -8,6 +8,8 @@ module org.example.demo {
     opens org.example.demo.controller to javafx.fxml;
 
 
+
+
     opens org.example.demo.entity to javafx.base;
     opens org.example.demo.dto to javafx.base;
 

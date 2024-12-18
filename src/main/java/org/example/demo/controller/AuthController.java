@@ -17,22 +17,28 @@ import org.example.demo.entity.Role;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 
 public class AuthController {
 
-    @FXML private TextField nameField;
-    @FXML private TextField emailField;
-    @FXML private TextField phoneField;
-    @FXML private TextField addressField;
-    @FXML private PasswordField passwordField;
-    @FXML private Button actionButton;
+    @FXML
+    public TextField nameField;
+    @FXML
+    public TextField emailField;
+    @FXML
+    public TextField phoneField;
+    @FXML
+    public TextField addressField;
+    @FXML
+    public PasswordField passwordField;
+    @FXML Button actionButton;
 
-    private IUserDAO userDAO = new UserDAO();
+    IUserDAO userDAO = new UserDAO();
 
     @FXML
-    private VBox authBox;
+    VBox authBox;
 
-    private boolean isCreatingAccount = false;
+    boolean isCreatingAccount = false;
 
     public void initialize() {
         if (isCreatingAccount) {
@@ -53,7 +59,7 @@ public class AuthController {
         initialize();
     }
 
-    public void handleAction() {
+    public void handleAction() throws SQLException {
         if (isCreatingAccount) {
             createAccount();
         } else {
@@ -62,7 +68,7 @@ public class AuthController {
     }
 
     @FXML
-    private void loginUser() {
+    void loginUser() throws SQLException {
         String email = emailField.getText();
         String password = passwordField.getText();
 
@@ -86,7 +92,7 @@ public class AuthController {
     }
 
     @FXML
-    private void createAccount() {
+    public void createAccount() throws SQLException {
         String name = nameField.getText();
         String email = emailField.getText();
         String phone = phoneField.getText();
@@ -116,7 +122,7 @@ public class AuthController {
         }
     }
 
-    private void showAlert(String title, String message, AlertType alertType) {
+     void showAlert(String title, String message, AlertType alertType) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(null);
@@ -125,7 +131,7 @@ public class AuthController {
     }
 
     @FXML
-    private void switchToBookPage(User user) {
+    void switchToBookPage(User user) {
         try {
             URL fxmlUrl = getClass().getResource("/org/example/demo/book-ui.fxml");
             if (fxmlUrl == null) {
@@ -151,11 +157,15 @@ public class AuthController {
     }
 
     // Clear input fields after account creation
-    private void clearInputFields() {
+     void clearInputFields() {
         nameField.clear();
         emailField.clear();
         phoneField.clear();
         addressField.clear();
         passwordField.clear();
+    }
+
+    public void setUserDAO(UserDAO mockUserDAO) {
+        this.userDAO = mockUserDAO;
     }
 }
