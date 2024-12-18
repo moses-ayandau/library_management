@@ -10,12 +10,6 @@ import java.util.Stack;
 
 public class BookDAO implements IBookDAO {
 
-    /**
-     * Retrieves all books from the database.
-     *
-     * @return a stack of Book objects representing all books in the database.
-     * @throws SQLException if a database access error occurs.
-     */
     public Stack<Book> getAllBooks() throws SQLException {
         Stack<Book> books = new Stack<>();
         String query = "SELECT * FROM Book ";
@@ -33,11 +27,10 @@ public class BookDAO implements IBookDAO {
                 book.setQuantity(rs.getInt("Quantity"));
                 books.push(book);
             }
-        } catch (Exception e) {
-            System.out.println("An error occurred " + e);
         }
         return books;
     }
+
 
     /**
      * Adds a new book to the database.

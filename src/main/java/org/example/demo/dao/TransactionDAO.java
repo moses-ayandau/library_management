@@ -13,8 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class TransactionDAO implements ITransactionDAO {
-
-    public boolean createTransaction(Transaction transaction) {
+    public boolean createTransaction(Transaction transaction) throws SQLException {
         String sql = "INSERT INTO transaction (bookID, userID, borrowedDate, dueDate) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -34,14 +33,12 @@ public class TransactionDAO implements ITransactionDAO {
                 }
                 return true;
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return false;
     }
 
     // Return a book
-    public boolean returnBook(int transactionId, Date returnDate) {
+    public boolean returnBook(int transactionId, Date returnDate) throws SQLException {
         String sql = "UPDATE transaction SET returnedDate = ? WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -51,14 +48,10 @@ public class TransactionDAO implements ITransactionDAO {
             pstmt.setInt(2, transactionId);
 
             return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return false;
     }
 
-
-    public List<Transaction> getActiveTransactions() {
+    public List<Transaction> getActiveTransactions() throws SQLException {
         List<Transaction> transactions = new LinkedList<>();
         String sql = "SELECT * FROM transaction WHERE returnedDate IS NULL";
 
@@ -69,18 +62,17 @@ public class TransactionDAO implements ITransactionDAO {
             while (rs.next()) {
                 Transaction transaction = new Transaction();
                 transaction.setID(rs.getInt("ID"));
-                transaction.setBookID(rs.getInt("bookId"));
-                transaction.setPatronID(rs.getInt("userId"));
+                transaction.setBookID(rs.getInt("bookID"));
+                transaction.setPatronID(rs.getInt("userID"));
                 transaction.setBorrowedDate(rs.getDate("borrowedDate"));
                 transaction.setDueDate(rs.getDate("dueDate"));
 
                 transactions.add(transaction);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return transactions;
     }
+
 
 
     // Get transaction by ID
@@ -96,11 +88,11 @@ public class TransactionDAO implements ITransactionDAO {
             if (rs.next()) {
                 Transaction transaction = new Transaction();
                 transaction.setID(rs.getInt("id"));
-                transaction.setBookID(rs.getInt("book_id"));
-                transaction.setPatronID(rs.getInt("patron_id"));
-                transaction.setBorrowedDate(rs.getDate("borrowed_date"));
-                transaction.setDueDate(rs.getDate("due_date"));
-                transaction.setReturnedDate(rs.getDate("returned_date"));
+                transaction.setBookID(rs.getInt("bookID"));
+                transaction.setPatronID(rs.getInt("userID"));
+                transaction.setBorrowedDate(rs.getDate("borrowedDate"));
+                transaction.setDueDate(rs.getDate("dueDate"));
+                transaction.setReturnedDate(rs.getDate("returnedDate"));
                 return transaction;
             }
         } catch (SQLException e) {

@@ -1,74 +1,47 @@
 package org.example.demo.controller;
 
-
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.ComboBox;
 import org.example.demo.dao.ReservationDAO;
 import org.example.demo.dao.interfaces.IReservationDAO;
 import org.example.demo.entity.Reservation;
 import org.example.demo.entity.ReservationStatus;
 
-import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ResourceBundle;
+import java.util.List;
+import java.util.Queue;
 
-public class ReservationController implements Initializable {
-    @FXML
-    private TableView<Reservation> reservationTable;
-    @FXML
-    private TableColumn<Reservation, Integer> idColumn;
-    @FXML
-    private TableColumn<Reservation, Integer> patronIdColumn;
-    @FXML
-    private TableColumn<Reservation, Integer> bookIdColumn;
-    @FXML
-    private TableColumn<Reservation, Date> dateColumn;
-    @FXML
-    private TableColumn<Reservation, String> statusColumn;
-    @FXML
-    private TableColumn<Reservation, Date> dueDateColumn;
+public class ReservationController {
 
-    @FXML
-    private TextField patronIdField;
-    @FXML
-    private TextField bookIdField;
-    @FXML
-    private DatePicker dueDatePicker;
-    @FXML
-    private ComboBox<ReservationStatus> statusComboBox;
-    @FXML
-    private Label reservationLabel;
+    // UI Components
+    public TableView<Reservation> reservationTable;
+    public TextField patronIdField;
+    public TextField bookIdField;
+    public DatePicker dueDatePicker;
+    public ComboBox<ReservationStatus> statusComboBox;
 
-    private final IReservationDAO reservationDAO = new ReservationDAO();
-    private ObservableList<Reservation> reservationList;
+    public IReservationDAO reservationDAO;
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-
-
-        reservationList = FXCollections.observableArrayList();
-
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("ID"));
-        patronIdColumn.setCellValueFactory(new PropertyValueFactory<>("patronID"));
-        bookIdColumn.setCellValueFactory(new PropertyValueFactory<>("bookID"));
-        dateColumn.setCellValueFactory(new PropertyValueFactory<>("reservedDate"));
-        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
-        dueDateColumn.setCellValueFactory(new PropertyValueFactory<>("dueDate"));
-
-
-        statusComboBox.setItems(FXCollections.observableArrayList(ReservationStatus.values()));
-
-        loadReservations();
+    // Show alert method for displaying messages to the user
+    public void showAlert(String title, String content, AlertType type) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(type);
+            alert.setTitle(title);
+            alert.setHeaderText(null);
+            alert.setContentText(content);
+            alert.showAndWait();
+        });
     }
 
-
-    @FXML
-    private void handleCreateReservation() {
+    // Handle creating a reservation
+    public void handleCreateReservation() {
         try {
             Reservation reservation = new Reservation();
             reservation.setPatronID(Integer.parseInt(patronIdField.getText()));
@@ -78,69 +51,37 @@ public class ReservationController implements Initializable {
             reservation.setDueDate(Date.valueOf(dueDatePicker.getValue()));
 
             reservationDAO.addReservation(reservation);
+
+            showAlert("Success", "Reservation created successfully!", AlertType.INFORMATION);
             loadReservations();
-            clearFields();
-            showAlert("Success", "Reservation created successfully!", Alert.AlertType.INFORMATION);
         } catch (Exception e) {
-            showAlert("Error", "Invalid input. Please check your entries.", Alert.AlertType.ERROR);
+            showAlert("Error", "Invalid input. Please check your entries.", AlertType.ERROR);
         }
     }
 
-    @FXML
-    private void handleUpdateReservationStatus() {
-        Reservation selectedReservation = reservationTable.getSelectionModel().getSelectedItem();
-        if (selectedReservation != null && statusComboBox.getValue() != null) {
-            selectedReservation.setStatus(statusComboBox.getValue());
-            try {
-                reservationDAO.updateReservationStatus(selectedReservation);
-                loadReservations();
-                showAlert("Success", "Reservation status updated successfully!", Alert.AlertType.INFORMATION);
-            } catch (Exception e) {
-                showAlert("Error", "Failed to update reservation status.", Alert.AlertType.ERROR);
-            }
-        } else {
-            showAlert("Error", "Please select a reservation and a status.", Alert.AlertType.WARNING);
-        }
-    }
-
-    @FXML
-    private void handleDeleteReservation() {
+    // Handle deleting a reservation
+    public void handleDeleteReservation() {
         Reservation selectedReservation = reservationTable.getSelectionModel().getSelectedItem();
         if (selectedReservation != null) {
             try {
                 reservationDAO.deleteReservation(selectedReservation.getID());
+                showAlert("Success", "Reservation deleted successfully!", AlertType.INFORMATION);
                 loadReservations();
-                showAlert("Success", "Reservation deleted successfully!", Alert.AlertType.INFORMATION);
             } catch (Exception e) {
-                showAlert("Error", "Failed to delete reservation.", Alert.AlertType.ERROR);
+                showAlert("Error", "Failed to delete reservation.", AlertType.ERROR);
             }
         } else {
-            showAlert("Error", "Please select a reservation to delete.", Alert.AlertType.WARNING);
+            showAlert("Error", "Please select a reservation to delete.", AlertType.WARNING);
         }
     }
 
-    private void loadReservations() {
-        reservationList.clear();
+    // Load all reservations into the table
+    public void loadReservations() {
         try {
-            reservationList.addAll(reservationDAO.getAllReservations());
-            reservationTable.setItems(reservationList);
+            Queue<Reservation> reservations = reservationDAO.getAllReservations();
+            reservationTable.setItems(FXCollections.observableArrayList(reservations));
         } catch (Exception e) {
-            showAlert("Error", "Failed to load reservations.", Alert.AlertType.ERROR);
+            showAlert("Error", "Failed to load reservations.", AlertType.ERROR);
         }
-    }
-
-    private void clearFields() {
-        patronIdField.clear();
-        bookIdField.clear();
-        dueDatePicker.setValue(null);
-        statusComboBox.setValue(null);
-    }
-
-    private void showAlert(String title, String content, Alert.AlertType type) {
-        Alert alert = new Alert(type);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        alert.showAndWait();
     }
 }

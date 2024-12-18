@@ -9,7 +9,6 @@ import java.util.List;
 
 public class JournalDAO implements IJournalDAO {
 
-
     /**
      * Adds a new journal to the database.
      *
@@ -17,15 +16,20 @@ public class JournalDAO implements IJournalDAO {
      * @throws SQLException if a database access error occurs.
      */
     public void addJournal(Journal journal) throws SQLException {
-        String query = "INSERT INTO journal (ID, title, publishedYear, issn, publisher) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO journal (title, publishedYear, issn, publisher) VALUES (?, ?, ?, ?)";
         try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, journal.getID());
-            stmt.setString(2, journal.getTitle());
-            stmt.setInt(3, journal.getPublishedYear());
-            stmt.setString(4, journal.getIssn());
-            stmt.setString(5, journal.getPublisher());
+             PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, journal.getTitle());
+            stmt.setInt(2, journal.getPublishedYear());
+            stmt.setString(3, journal.getIssn());
+            stmt.setString(4, journal.getPublisher());
             stmt.executeUpdate();
+
+            // Fetch and set auto-generated ID
+            ResultSet generatedKeys = stmt.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                journal.setID(generatedKeys.getInt(1));
+            }
         }
     }
 
@@ -59,14 +63,15 @@ public class JournalDAO implements IJournalDAO {
      * Deletes a journal from the database by its ID.
      *
      * @param id the ID of the journal to delete.
+     * @return true if a journal was deleted, false otherwise.
      * @throws SQLException if a database access error occurs.
      */
-    public void deleteJournal(int id) throws SQLException {
+    public boolean deleteJournal(int id) throws SQLException {
         String query = "DELETE FROM journal WHERE ID = ?";
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, id);
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
         }
     }
 
@@ -94,5 +99,4 @@ public class JournalDAO implements IJournalDAO {
         }
         return journals;
     }
-
 }

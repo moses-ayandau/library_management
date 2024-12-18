@@ -11,12 +11,13 @@ import org.example.demo.dao.TransactionDAO;
 import org.example.demo.entity.Transaction;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.ResourceBundle;
 
 public class TransactionController implements Initializable {
     @FXML
-    private TableView<Transaction> transactionTable;
+    TableView<Transaction> transactionTable;
     @FXML
     private TableColumn<Transaction, Integer> idColumn;
     @FXML
@@ -29,14 +30,14 @@ public class TransactionController implements Initializable {
     private TableColumn<Transaction, Date> dueDateColumn;
 
     @FXML
-    private TextField bookIdField;
+    TextField bookIdField;
     @FXML
-    private TextField patronIdField;
+    TextField patronIdField;
     @FXML
-    private DatePicker dueDatePicker;
+    DatePicker dueDatePicker;
 
-    private TransactionDAO transactionDAO;
-    private ObservableList<Transaction> transactionList;
+    TransactionDAO transactionDAO;
+    ObservableList<Transaction> transactionList;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -50,12 +51,18 @@ public class TransactionController implements Initializable {
         borrowedDateColumn.setCellValueFactory(new PropertyValueFactory<>("borrowedDate"));
         dueDateColumn.setCellValueFactory(new PropertyValueFactory<>("dueDate"));
 
-        loadActiveTransactions();
+        try {
+            loadActiveTransactions();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
+
     @FXML
-    private void handleCreateTransaction() {
+    void handleCreateTransaction() {
         try {
+            System.out.println("Creating transaction.......");
             Transaction transaction = new Transaction();
             transaction.setBookID(Integer.parseInt(bookIdField.getText()));
             transaction.setPatronID(Integer.parseInt(patronIdField.getText()));
@@ -75,7 +82,7 @@ public class TransactionController implements Initializable {
     }
 
     @FXML
-    private void handleReturnBook() {
+    void handleReturnBook() throws SQLException {
         Transaction selectedTransaction = transactionTable.getSelectionModel().getSelectedItem();
         if (selectedTransaction != null) {
             if (transactionDAO.returnBook(selectedTransaction.getID(), (java.sql.Date) new Date())) {
@@ -89,23 +96,28 @@ public class TransactionController implements Initializable {
         }
     }
 
-    private void loadActiveTransactions() {
+    void loadActiveTransactions() throws SQLException {
         transactionList.clear();
         transactionList.addAll(transactionDAO.getActiveTransactions());
         transactionTable.setItems(transactionList);
     }
 
-    private void clearFields() {
+    void clearFields() {
         bookIdField.clear();
         patronIdField.clear();
         dueDatePicker.setValue(null);
     }
 
-    private void showAlert(String title, String content, Alert.AlertType type) {
+    void showAlert(String title, String content, Alert.AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
     }
+
+    public void setTransactionDAO(TransactionDAO mockTransactionDAO) {
+        this.transactionDAO = mockTransactionDAO;
+    }
+
 }

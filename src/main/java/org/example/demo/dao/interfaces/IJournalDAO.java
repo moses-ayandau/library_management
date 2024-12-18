@@ -8,6 +8,6 @@ import java.util.List;
 public interface IJournalDAO {
     void addJournal(Journal journal) throws SQLException;
     Journal getJournalById(int id) throws SQLException;
-    void deleteJournal(int id) throws SQLException;
+    boolean deleteJournal(int id) throws SQLException;
     List<Journal> getAllJournals() throws SQLException;
 }
