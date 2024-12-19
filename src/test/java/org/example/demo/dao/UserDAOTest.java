@@ -99,4 +99,12 @@ public class UserDAOTest {
         assertEquals(2, users.size());
     }
 
+    @Test
+    public void testLoginUser_IncorrectPassword() throws SQLException {
+        User user = userDAO.loginUser("john.doe@example.com", "incorrectPassword");
+
+        assertNull(user, "Login should fail with incorrect password.");
+    }
+
+
 }

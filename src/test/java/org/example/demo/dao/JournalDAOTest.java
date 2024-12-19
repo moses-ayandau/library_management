@@ -95,7 +95,7 @@ public class JournalDAOTest {
         ResultSet rs = stmt.executeQuery();
         rs.next();
         int count = rs.getInt(1);
-        assertEquals(0, count); // No records should exist after deletion
+        assertEquals(0, count);
     }
 
 
@@ -119,9 +119,8 @@ public class JournalDAOTest {
 
         List<Journal> journals = journalDAO.getAllJournals();
 
-        assertNotNull(journals); // Ensure the result is not null
+        assertNotNull(journals);
 
-        // Validate the content of the first journal
         Journal retrievedJournal1 = journals.stream()
                 .filter(j -> "Journal 1".equals(j.getTitle()))
                 .findFirst()
@@ -132,7 +131,6 @@ public class JournalDAOTest {
         assertEquals("1234-5678", retrievedJournal1.getIssn());
         assertEquals("Publisher 1", retrievedJournal1.getPublisher());
 
-        // Validate the content of the second journal
         Journal retrievedJournal2 = journals.stream()
                 .filter(j -> "Journal 2".equals(j.getTitle()))
                 .findFirst()
@@ -143,16 +141,27 @@ public class JournalDAOTest {
         assertEquals("8765-4321", retrievedJournal2.getIssn());
         assertEquals("Publisher 2", retrievedJournal2.getPublisher());
     }
-//
-//    @Test
-//    public void testGetAllJournals_EmptyResultSet() throws Exception {
-//        // Ensure the database is empty before running the test
-//        PreparedStatement stmt = connection.prepareStatement("DELETE FROM Journal");
-//        stmt.executeUpdate();
-//
-//        List<Journal> journals = journalDAO.getAllJournals();
-//        assertNotNull(journals);
-//        assertTrue(journals.isEmpty());
-//    }
+    @Test
+    public void testAddJournalWithNullOrEmptyFields() throws Exception {
+        Journal journal = new Journal();
+        journal.setTitle("");
+        journal.setPublishedYear(2024);
+        journal.setIssn("1234-5678");
+        journal.setPublisher("");
+
+        journalDAO.addJournal(journal);
+        int generatedId = journal.getID();
+
+        Journal retrievedJournal = journalDAO.getJournalById(generatedId);
+        assertNotNull(retrievedJournal);
+        assertEquals("", retrievedJournal.getTitle());
+        assertEquals("", retrievedJournal.getPublisher());
+        assertEquals(generatedId, retrievedJournal.getID());
+    }
+    @Test
+    public void testDeleteNonExistentJournalShouldReturnFalse() throws Exception {
+        boolean isDeleted = journalDAO.deleteJournal(9999);
+        assertFalse(isDeleted, "Deleting a non-existent journal should return false.");
+    }
 
 }
