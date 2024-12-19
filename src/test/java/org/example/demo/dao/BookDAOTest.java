@@ -5,7 +5,6 @@ import org.example.demo.entity.Book;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -23,12 +22,11 @@ class BookDAOTest {
 
     @BeforeEach
     void setUp() throws SQLException {
-        // Configure the H2 in-memory database for testing
+
         DatabaseConnection.configureH2ForTesting();
         connection = DatabaseConnection.getConnection();
         bookDAO = new BookDAO();
 
-        // Create schema and populate test data
         try (Statement stmt = connection.createStatement()) {
             stmt.execute("""
                 CREATE TABLE IF NOT EXISTS Book (
@@ -108,25 +106,6 @@ class BookDAOTest {
         assertNull(book, "Book with non-existent ID should return null.");
     }
 
-//    @Test
-//    void testUpdateBookShouldUpateWithSuccess() throws SQLException {
-//        Book book = new Book();
-//        book.setID(1);
-//        book.setTitle("Book Three");
-//        book.setDescription("Updated Description");
-//        book.setAuthor("Book Author");
-//        book.setIsbn("123-456");
-//        book.setPublishedYear(2021);
-//        book.setQuantity(7);
-//
-//        boolean result = bookDAO.updateBook(book);
-//        Book bookFromDB = bookDAO.getBookById(1);
-//
-//
-//        assertTrue(result, "Update should return true for successful update.");
-//        assertEquals(7, bookFromDB.getQuantity());
-//        assertEquals("Description One", bookFromDB.getDescription());
-//    }
 
     @Test
     void testUpdateBookNotFoundShouldBecauseBookBecauseBookNotFound() throws SQLException {
@@ -165,20 +144,6 @@ class BookDAOTest {
 //        assertNull(bookDAO.getBookById(1), "Book with ID 1 should no longer exist.");
     }
 
-//    @Test
-//    void testDeleteBookWithActiveTransactionsShouldNotDelete() throws SQLException {
-//
-//        try (Statement stmt = connection.createStatement()) {
-//            stmt.execute("INSERT INTO transaction (bookID) VALUES (1);");
-//        }
-//
-//
-//        boolean result = bookDAO.deleteBook(1);
-//
-//
-//        assertFalse(result, "Book with active transactions should not be deleted.");
-//        assertNotNull(bookDAO.getBookById(1), "Book with ID 1 should still exist.");
-//    }
 
     @Test
     void testDeleteBookNotFoundShouldReturnWithFailure() throws SQLException {

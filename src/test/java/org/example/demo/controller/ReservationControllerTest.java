@@ -58,33 +58,6 @@ public class ReservationControllerTest {
         });
         latch.await();
     }
-//
-//    @Test
-//    void testHandleCreateReservation_Successful() throws SQLException {
-//        // Arrange
-//        Reservation mockReservation = new Reservation();
-//        mockReservation.setPatronID(123);
-//        mockReservation.setBookID(456);
-//        mockReservation.setReservedDate(Date.valueOf(LocalDate.now()));
-//        mockReservation.setDueDate(Date.valueOf(LocalDate.now().plusDays(7)));
-//        mockReservation.setStatus(ReservationStatus.PENDING);
-//
-//        // Mock DAO behavior
-//        when(mockReservationDAO.addReservation(any(Reservation.class))).thenReturn(true);
-//
-//        // Populate UI fields
-//        Platform.runLater(() -> {
-//            controller.patronIdField.setText("123");
-//            controller.bookIdField.setText("456");
-//            controller.dueDatePicker.setValue(LocalDate.now().plusDays(7));
-//        });
-//
-//        // Act
-//        Platform.runLater(() -> controller.handleCreateReservation());
-//
-//        // Assert
-//        verify(mockReservationDAO).addReservation(any(Reservation.class));
-//    }
 
     @Test
     public void testHandleCreateReservation_InvalidInput() throws SQLException {

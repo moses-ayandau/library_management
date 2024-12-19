@@ -1,10 +1,13 @@
 package org.example.demo.entity;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
+
+import java.sql.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
-import java.sql.Date;
 
 public class TransactionTest {
 
@@ -15,108 +18,77 @@ public class TransactionTest {
         transaction = new Transaction();
     }
 
-    @Test
-    public void testGetAndSetID() {
-        int expectedID = 1;
-
-        transaction.setID(expectedID);
-        int actualID = transaction.getID();
-
-        assertEquals(expectedID, actualID, "The transaction ID should be set and retrieved correctly.");
+    @ParameterizedTest
+    @ValueSource(ints = {1, 2, 100})
+    public void testGetAndSetID(int id) {
+        transaction.setID(id);
+        assertEquals(id, transaction.getID(), "The transaction ID should be set and retrieved correctly.");
     }
 
-    @Test
-    public void testGetAndSetBookID() {
-        int expectedBookID = 101;
-
-        transaction.setBookID(expectedBookID);
-        int actualBookID = transaction.getBookID();
-
-        assertEquals(expectedBookID, actualBookID, "The book ID should be set and retrieved correctly.");
+    @ParameterizedTest
+    @ValueSource(ints = {101, 202, 303})
+    public void testGetAndSetBookID(int bookID) {
+        transaction.setBookID(bookID);
+        assertEquals(bookID, transaction.getBookID(), "The book ID should be set and retrieved correctly.");
     }
 
-    @Test
-    public void testGetAndSetPatronID() {
-        int expectedPatronID = 202;
-
-        transaction.setPatronID(expectedPatronID);
-        int actualPatronID = transaction.getPatronID();
-
-        assertEquals(expectedPatronID, actualPatronID, "The patron ID should be set and retrieved correctly.");
+    @ParameterizedTest
+    @ValueSource(ints = {202, 404, 505})
+    public void testGetAndSetPatronID(int patronID) {
+        transaction.setPatronID(patronID);
+        assertEquals(patronID, transaction.getPatronID(), "The patron ID should be set and retrieved correctly.");
     }
 
-    @Test
-    public void testGetAndSetBorrowedDate() {
-        Date expectedBorrowedDate = Date.valueOf("2024-12-01");
+    @ParameterizedTest
+    @CsvSource({
+            "2024-12-01, 2024-12-10, 2024-12-15",
+            "2024-01-01, 2024-01-05, 2024-01-10",
+            "2023-11-25, 2023-12-01, 2023-12-05"
+    })
+    public void testDates(String borrowed, String returned, String due) {
+        Date borrowedDate = Date.valueOf(borrowed);
+        Date returnedDate = Date.valueOf(returned);
+        Date dueDate = Date.valueOf(due);
 
-        transaction.setBorrowedDate(expectedBorrowedDate);
-        Date actualBorrowedDate = transaction.getBorrowedDate();
+        transaction.setBorrowedDate(borrowedDate);
+        transaction.setReturnedDate(returnedDate);
+        transaction.setDueDate(dueDate);
 
-        assertEquals(expectedBorrowedDate, actualBorrowedDate, "The borrowed date should be set and retrieved correctly.");
+        assertEquals(borrowedDate, transaction.getBorrowedDate(), "The borrowed date should be correctly set and retrieved.");
+        assertEquals(returnedDate, transaction.getReturnedDate(), "The returned date should be correctly set and retrieved.");
+        assertEquals(dueDate, transaction.getDueDate(), "The due date should be correctly set and retrieved.");
     }
 
-    @Test
-    public void testGetAndSetReturnedDate() {
-        Date expectedReturnedDate = Date.valueOf("2024-12-10");
+    @ParameterizedTest
+    @CsvSource({
+            "1, 101, 202, 2024-12-01, 2024-12-10, 2024-12-15",
+            "2, 102, 203, 2024-01-01, 2024-01-05, 2024-01-10",
+            "3, 103, 204, 2023-11-25, 2023-12-01, 2023-12-05"
+    })
+    public void testTransactionAttributes(int id, int bookID, int patronID, String borrowed, String returned, String due) {
+        Date borrowedDate = Date.valueOf(borrowed);
+        Date returnedDate = Date.valueOf(returned);
+        Date dueDate = Date.valueOf(due);
 
-        // When
-        transaction.setReturnedDate(expectedReturnedDate);
-        Date actualReturnedDate = transaction.getReturnedDate();
+        transaction.setID(id);
+        transaction.setBookID(bookID);
+        transaction.setPatronID(patronID);
+        transaction.setBorrowedDate(borrowedDate);
+        transaction.setReturnedDate(returnedDate);
+        transaction.setDueDate(dueDate);
 
-        // Then
-        assertEquals(expectedReturnedDate, actualReturnedDate, "The returned date should be set and retrieved correctly.");
+        assertEquals(id, transaction.getID(), "The transaction ID should be correctly set.");
+        assertEquals(bookID, transaction.getBookID(), "The book ID should be correctly set.");
+        assertEquals(patronID, transaction.getPatronID(), "The patron ID should be correctly set.");
+        assertEquals(borrowedDate, transaction.getBorrowedDate(), "The borrowed date should be correctly set.");
+        assertEquals(returnedDate, transaction.getReturnedDate(), "The returned date should be correctly set.");
+        assertEquals(dueDate, transaction.getDueDate(), "The due date should be correctly set.");
     }
 
-    @Test
-    public void testGetAndSetDueDate() {
-        // Given
-        Date expectedDueDate = Date.valueOf("2024-12-15");
-
-        // When
-        transaction.setDueDate(expectedDueDate);
-        Date actualDueDate = transaction.getDueDate();
-
-        // Then
-        assertEquals(expectedDueDate, actualDueDate, "The due date should be set and retrieved correctly.");
-    }
-
-    @Test
-    public void testTransactionConstructor() {
-        // Given
-        int expectedID = 1;
-        int expectedBookID = 101;
-        int expectedPatronID = 202;
-        Date expectedBorrowedDate = Date.valueOf("2024-12-01");
-        Date expectedReturnedDate = Date.valueOf("2024-12-10");
-        Date expectedDueDate = Date.valueOf("2024-12-15");
-
-        // When
-        transaction.setID(expectedID);
-        transaction.setBookID(expectedBookID);
-        transaction.setPatronID(expectedPatronID);
-        transaction.setBorrowedDate(expectedBorrowedDate);
-        transaction.setReturnedDate(expectedReturnedDate);
-        transaction.setDueDate(expectedDueDate);
-
-        // Then
-        assertEquals(expectedID, transaction.getID(), "The transaction ID should be correctly set.");
-        assertEquals(expectedBookID, transaction.getBookID(), "The book ID should be correctly set.");
-        assertEquals(expectedPatronID, transaction.getPatronID(), "The patron ID should be correctly set.");
-        assertEquals(expectedBorrowedDate, transaction.getBorrowedDate(), "The borrowed date should be correctly set.");
-        assertEquals(expectedReturnedDate, transaction.getReturnedDate(), "The returned date should be correctly set.");
-        assertEquals(expectedDueDate, transaction.getDueDate(), "The due date should be correctly set.");
-    }
-
-    @Test
-    public void testSetMemberID() {
-        // Given
-        int expectedMemberID = 303;
-
-        // When
-        transaction.setMemberID(expectedMemberID);
-        int actualMemberID = transaction.getPatronID();  // patronID is used as memberID
-
-        // Then
-        assertEquals(expectedMemberID, actualMemberID, "The member ID should be set and retrieved correctly.");
+    @ParameterizedTest
+    @ValueSource(ints = {303, 404, 505})
+    public void testSetAndGetPatronID(int memberID) {
+        transaction.setMemberID(memberID);
+        assertEquals(memberID, transaction.getPatronID(), "The Patron ID should be set and retrieved correctly.");
     }
 }

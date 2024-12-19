@@ -60,10 +60,8 @@
 //        Platform.runLater(() -> {
 //            bookController = new BookController();
 //
-//            // Use reflection or a setter method to inject mock DAOs
 //            bookController.bookDAO = mockBookDAO;
 //
-//            // Set up FXML fields with mock TextField instances
 //            bookController.titleField = new TextField();
 //            bookController.descriptionField = new TextField();
 //            bookController.authorField = new TextField();
@@ -84,7 +82,6 @@
 //
 //        Platform.runLater(() -> {
 //            try {
-//                // Prepare test data with invalid input
 //                bookController.titleField.setText("");
 //                bookController.descriptionField.setText("Test Description");
 //                bookController.authorField.setText("Test Author");
@@ -92,10 +89,8 @@
 //                bookController.yearField.setText("2023");
 //                bookController.quantityField.setText("5");
 //
-//                // Perform the action
 //                bookController.addBook();
 //
-//                // No verification needed as we're checking validation
 //            } catch (Exception e) {
 //                fail("Unexpected exception: " + e.getMessage());
 //            } finally {
@@ -105,77 +100,7 @@
 //
 //        assertTrue(latch.await(10, TimeUnit.SECONDS), "Test timed out");
 //    }
-////
-////    @Test
-////    void testBorrowBook_Success() throws InterruptedException, SQLException {
-////        CountDownLatch latch = new CountDownLatch(1);
-////
-////        Platform.runLater(() -> {
-////            try {
-////                // Prepare test data
-////                Book testBook = new Book();
-////                testBook.setID(1);
-////                testBook.setTitle("Test Book");
-////                testBook.setQuantity(5);
-////
-////                // Mock DAO behaviors
-////                when(mockBookDAO.getBookById(1)).thenReturn(testBook);
-////                when(mockTransactionDAO.createTransaction(any(Transaction.class))).thenReturn(true);
-////                when(mockBookDAO.updateBook(any(Book.class))).thenReturn(true);
-////
-////                // Use reflection to call private method
-////                java.lang.reflect.Method borrowBookMethod =
-////                        BookController.class.getDeclaredMethod("borrowBook", Book.class, Integer.class);
-////                borrowBookMethod.setAccessible(true);
-////                borrowBookMethod.invoke(bookController, testBook, 1);
-////
-////                // Verify interactions
-////                verify(mockTransactionDAO).createTransaction(any(Transaction.class));
-////                verify(mockBookDAO).updateBook(any(Book.class));
-////            } catch (Exception e) {
-////                fail("Unexpected exception: " + e.getMessage());
-////            } finally {
-////                latch.countDown();
-////            }
-////        });
-////
-////        assertTrue(latch.await(10, TimeUnit.SECONDS), "Test timed out");
-////    }
-////
-////    @Test
-////    void testReserveBook_Success() throws InterruptedException, SQLException {
-////        CountDownLatch latch = new CountDownLatch(1);
-////
-////        Platform.runLater(() -> {
-////            try {
-////                // Prepare test data
-////                Book testBook = new Book();
-////                testBook.setID(1);
-////                testBook.setTitle("Test Book");
-////                testBook.setQuantity(5);
-////
-////                // Mock DAO behaviors
-////                when(mockReservationDAO.addReservation(any(Reservation.class))).thenReturn(true);
-////                when(mockBookDAO.updateBook(any(Book.class))).thenReturn(true);
-////
-////                // Use reflection to call private method
-////                java.lang.reflect.Method reserveBookMethod =
-////                        BookController.class.getDeclaredMethod("reserveBook", Book.class, Integer.class);
-////                reserveBookMethod.setAccessible(true);
-////                reserveBookMethod.invoke(bookController, testBook, 1);
-////
-////                // Verify interactions
-////                verify(mockReservationDAO).addReservation(any(Reservation.class));
-////                verify(mockBookDAO).updateBook(any(Book.class));
-////            } catch (Exception e) {
-////                fail("Unexpected exception: " + e.getMessage());
-////            } finally {
-////                latch.countDown();
-////            }
-////        });
-////
-////        assertTrue(latch.await(10, TimeUnit.SECONDS), "Test timed out");
-////    }
+
 //
 //    @Test
 //    void testLoadBooks_Success() throws InterruptedException, SQLException {
