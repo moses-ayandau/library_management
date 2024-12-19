@@ -1,7 +1,9 @@
 package org.example.demo.dto;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -14,37 +16,50 @@ public class JournalDTOTest {
         journalDTO = new JournalDTO();
     }
 
-    @Test
-    public void testSetAndGetID() {
-        journalDTO.setID(1);
-        assertEquals(1, journalDTO.getID(), "ID should be 1");
+    @ParameterizedTest
+    @ValueSource(ints = {1, 2, 100})
+    public void testSetAndGetID(int id) {
+        journalDTO.setID(id);
+        assertEquals(id, journalDTO.getID(), "ID should be set and retrieved correctly.");
     }
 
-    @Test
-    public void testSetAndGetTitle() {
-        String title = "Test Journal";
+    @ParameterizedTest
+    @CsvSource({
+            "Test Journal",
+            "Advanced Research",
+            "Machine Learning Trends"
+    })
+    public void testSetAndGetTitle(String title) {
         journalDTO.setTitle(title);
-        assertEquals(title, journalDTO.getTitle(), "Title should be 'Test Journal'");
+        assertEquals(title, journalDTO.getTitle(), "Title should be set and retrieved correctly.");
     }
 
-    @Test
-    public void testSetAndGetPublishedYear() {
-        int publishedYear = 2024;
+    @ParameterizedTest
+    @ValueSource(ints = {2020, 2023, 2024})
+    public void testSetAndGetPublishedYear(int publishedYear) {
         journalDTO.setPublishedYear(publishedYear);
-        assertEquals(publishedYear, journalDTO.getPublishedYear(), "Published year should be 2024");
+        assertEquals(publishedYear, journalDTO.getPublishedYear(), "Published year should be set and retrieved correctly.");
     }
 
-    @Test
-    public void testSetAndGetIssn() {
-        String issn = "1234-5678";
+    @ParameterizedTest
+    @CsvSource({
+            "1234-5678",
+            "9876-5432",
+            "1122-3344"
+    })
+    public void testSetAndGetIssn(String issn) {
         journalDTO.setIssn(issn);
-        assertEquals(issn, journalDTO.getIssn(), "ISSN should be '1234-5678'");
+        assertEquals(issn, journalDTO.getIssn(), "ISSN should be set and retrieved correctly.");
     }
 
-    @Test
-    public void testSetAndGetPublisher() {
-        String publisher = "Test Publisher";
+    @ParameterizedTest
+    @CsvSource({
+            "Test Publisher",
+            "Academic Press",
+            "Research International"
+    })
+    public void testSetAndGetPublisher(String publisher) {
         journalDTO.setPublisher(publisher);
-        assertEquals(publisher, journalDTO.getPublisher(), "Publisher should be 'Test Publisher'");
+        assertEquals(publisher, journalDTO.getPublisher(), "Publisher should be set and retrieved correctly.");
     }
 }

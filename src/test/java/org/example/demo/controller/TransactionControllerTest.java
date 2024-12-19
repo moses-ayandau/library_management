@@ -57,38 +57,6 @@ public class TransactionControllerTest {
         });
         latch.await();
     }
-//    @Test
-//    void testHandleCreateTransaction_Successful() throws SQLException, InterruptedException {
-//        // Arrange: Prepare mock transaction and mock DAO behavior
-//        Transaction mockTransaction = new Transaction();
-//        mockTransaction.setBookID(123);
-//        mockTransaction.setPatronID(456);
-//        mockTransaction.setBorrowedDate(java.sql.Date.valueOf(LocalDate.now()));  // Correct type
-//        mockTransaction.setDueDate(java.sql.Date.valueOf(LocalDate.now().plusDays(7)));  // Correct type
-//
-//        when(mockTransactionDAO.createTransaction(any(Transaction.class))).thenReturn(true);
-//
-//        // Populate UI fields with valid data
-//        Platform.runLater(() -> {
-//            controller.bookIdField.setText("123");
-//            controller.patronIdField.setText("456");
-//            controller.dueDatePicker.setValue(LocalDate.now().plusDays(7));
-//            System.out.println("UI fields populated");  // Debugging line
-//        });
-//
-//        // Ensure UI updates are completed before calling the action
-//        CountDownLatch latch = new CountDownLatch(1);
-//        Platform.runLater(() -> {
-//            controller.handleCreateTransaction();
-//            latch.countDown();  // Ensure we wait until handleCreateTransaction is called
-//        });
-//
-//        // Wait for the JavaFX thread to complete
-//        latch.await();
-//
-//        // Assert: Verify that the createTransaction method was called with the correct parameters
-//        verify(mockTransactionDAO, times(1)).createTransaction(any(Transaction.class));
-//    }
 
 
     @Test
@@ -100,41 +68,6 @@ public class TransactionControllerTest {
 
         verify(mockTransactionDAO, never()).createTransaction(any(Transaction.class));
     }
-
-//    @Test
-//    void testHandleReturnBook_Successful() throws SQLException, InterruptedException {
-//        Transaction transaction = new Transaction();
-//        transaction.setID(1);
-//        transaction.setBookID(123);
-//        transaction.setPatronID(456);
-//        transaction.setBorrowedDate(java.sql.Date.valueOf(LocalDate.now()));  // Correct type here
-//        transaction.setDueDate(java.sql.Date.valueOf(LocalDate.now().plusDays(7))); // Correct type here
-//
-//        when(mockTransactionDAO.returnBook(eq(1), any(java.sql.Date.class))).thenReturn(true);
-//
-//        Platform.runLater(() -> {
-//            controller.transactionTable.getItems().add(transaction);
-//            controller.transactionTable.getSelectionModel().select(transaction); // Select the transaction
-//        });
-//
-//        CountDownLatch latch = new CountDownLatch(1);
-//        Platform.runLater(() -> {
-//            assertNotNull(controller.transactionTable.getSelectionModel().getSelectedItem(), "Transaction should be selected");
-//
-//            try {
-//                controller.handleReturnBook();
-//            } catch (SQLException e) {
-//                throw new RuntimeException(e);
-//            } finally {
-//                latch.countDown();
-//            }
-//        });
-//
-//        latch.await();
-//
-//        verify(mockTransactionDAO, times(1)).returnBook(eq(1), any(java.sql.Date.class));
-//    }
-
 
 
     @Test

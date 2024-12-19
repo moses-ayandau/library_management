@@ -22,7 +22,7 @@ public class JournalDAOTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-        // Mock static method
+
         try (MockedStatic<DatabaseConnection> mockedDbConnection = mockStatic(DatabaseConnection.class)) {
             connection = DriverManager.getConnection("jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;", "sa", "");
             Statement stmt = connection.createStatement();
@@ -44,36 +44,11 @@ public class JournalDAOTest {
     public void tearDown() throws Exception {
         if (connection != null) {
             Statement stmt = connection.createStatement();
-            stmt.execute("DROP TABLE Journal"); // Clean up after each test
+            stmt.execute("DROP TABLE Journal");
             stmt.close();
             connection.close();
         }
     }
-
-//    @Test
-//    public void testAddJournal_Success() throws Exception {
-//        // Arrange
-//        Journal journal = new Journal();
-//        journal.setTitle("Journal Title");
-//        journal.setPublishedYear(2024);
-//        journal.setIssn("1234-5678");
-//        journal.setPublisher("Publisher Name");
-//
-//        // Act
-//        journalDAO.addJournal(journal);
-//
-//        // Assert
-//        try (PreparedStatement stmt = connection.prepareStatement("SELECT title, publishedYear, issn, publisher FROM Journal WHERE title = ?")) {
-//            stmt.setString(1, "Journal Title");
-//            ResultSet rs = stmt.executeQuery();
-//
-//            assertTrue(rs.next()); // Ensure a record is returned
-//            assertEquals("Journal Title", rs.getString("title"));
-//            assertEquals(2024, rs.getInt("publishedYear"));
-//            assertEquals("1234-5678", rs.getString("issn"));
-//            assertEquals("Publisher Name", rs.getString("publisher"));
-//        }
-//    }
 
 
     @Test
@@ -96,8 +71,8 @@ public class JournalDAOTest {
 
     @Test
     public void testGetJournalById_NotFound() throws Exception {
-        Journal journal = journalDAO.getJournalById(999); // Non-existing ID
-        assertNull(journal); // Should return null
+        Journal journal = journalDAO.getJournalById(999);
+        assertNull(journal);
     }
 
     @Test
@@ -109,11 +84,11 @@ public class JournalDAOTest {
         journal.setPublisher("Publisher Name");
 
         journalDAO.addJournal(journal);
-        int generatedId = journal.getID(); // Get the auto-generated ID
+        int generatedId = journal.getID();
 
         boolean isDeleted = journalDAO.deleteJournal(generatedId);
 
-        assertTrue(isDeleted); // Deletion should be successful
+        assertTrue(isDeleted);
 
         PreparedStatement stmt = connection.prepareStatement("SELECT COUNT(*) FROM Journal WHERE ID = ?");
         stmt.setInt(1, generatedId);
