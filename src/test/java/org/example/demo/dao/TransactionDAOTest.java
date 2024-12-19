@@ -116,7 +116,7 @@ public class TransactionDAOTest {
         List<Transaction> transactions = transactionDAO.getActiveTransactions();
 
         assertNotNull(transactions);
-        assertTrue(transactions.size() > 1); // Ensure that there are more than one transaction
+        assertTrue(transactions.size() > 1);
 
         assertTrue(transactions.stream().anyMatch(t -> t.getID() == transaction1.getID()));
         assertTrue(transactions.stream().anyMatch(t -> t.getID() == transaction2.getID()));
@@ -129,4 +129,22 @@ public class TransactionDAOTest {
 
         assertNull(transaction);
     }
+    @Test
+    public void testReturnNonExistentBook() throws SQLException {
+        boolean result = transactionDAO.returnBook(999, new java.sql.Date(new Date().getTime()));
+
+        assertFalse(result, "Returning a non-existent book should return false.");
+    }
+    @Test
+    public void testGetActiveTransactions_NoActiveTransactions() throws SQLException {
+        try (Statement stmt = connection.createStatement()) {
+            stmt.execute("DELETE FROM transaction");
+        }
+
+        List<Transaction> transactions = transactionDAO.getActiveTransactions();
+
+        assertNotNull(transactions, "The result should not be null.");
+        assertTrue(transactions.isEmpty(), "There should be no active transactions.");
+    }
+
 }

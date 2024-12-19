@@ -8,10 +8,10 @@ public class DatabaseConnection {
 
     private static Connection mockConnection;
 
-    static String url =  System.getenv("DB_URL");
-    static String user =  System.getenv("DB_USER");
-    static String password = System.getenv("DB_PASSWORD");
-
+    // Default production database
+    static String url = "jdbc:mysql://localhost:3306/LibraryManagement";
+    static String user = "root";
+    static String password = "#moses21311 *";
 
     /**
      * Retrieves a connection to the database.

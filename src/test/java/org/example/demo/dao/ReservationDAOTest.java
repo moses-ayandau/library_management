@@ -197,5 +197,40 @@ public class ReservationDAOTest {
             assertEquals(200, result.getBookID());
         }
     }
+    @Test
+    public void testAddDuplicateReservation() throws SQLException {
+        try (MockedStatic<DatabaseConnection> mockedStaticDB = mockStatic(DatabaseConnection.class)) {
+
+            Reservation reservation = new Reservation();
+            reservation.setBookID(1);
+            reservation.setPatronID(100);
+            reservation.setReservedDate(Date.valueOf("2024-01-01"));
+
+            mockedStaticDB.when(DatabaseConnection::getConnection).thenReturn(mockConnection);
+            when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
+
+            when(mockPreparedStatement.executeUpdate()).thenReturn(0);
+
+            boolean result = reservationDAO.addReservation(reservation);
+
+            assertFalse(result, "The system should reject duplicate reservations.");
+        }
+    }
+    @Test
+    public void testGetAllReservations_EmptyDatabase() throws SQLException {
+        try (MockedStatic<DatabaseConnection> mockedStaticDB = mockStatic(DatabaseConnection.class)) {
+
+            mockedStaticDB.when(DatabaseConnection::getConnection).thenReturn(mockConnection);
+            when(mockConnection.createStatement()).thenReturn(mockStatement);
+            when(mockStatement.executeQuery(anyString())).thenReturn(mockResultSet);
+
+            when(mockResultSet.next()).thenReturn(false);
+
+            Queue<Reservation> reservations = reservationDAO.getAllReservations();
+
+            assertNotNull(reservations, "Result should not be null");
+            assertTrue(reservations.isEmpty(), "The reservations queue should be empty.");
+        }
+    }
 
 }
