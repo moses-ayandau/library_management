@@ -20,7 +20,7 @@ public class UserReservationDTOTest {
 
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 100})
-    public void testSetAndGetID(int id) {
+    public void shouldSetAndGetIDCorrectly(int id) {
         userReservationDTO.setID(id);
         assertEquals(id, userReservationDTO.getID(), "ID should be set and retrieved correctly.");
     }
@@ -31,7 +31,7 @@ public class UserReservationDTOTest {
             "Jane Smith",
             "Alex Johnson"
     })
-    public void testSetAndGetName(String name) {
+    public void shouldSetAndGetNameCorrectly(String name) {
         userReservationDTO.setName(name);
         assertEquals(name, userReservationDTO.getName(), "Name should be set and retrieved correctly.");
     }
@@ -42,7 +42,7 @@ public class UserReservationDTOTest {
             "janesmith@example.com",
             "alex.johnson@example.com"
     })
-    public void testSetAndGetEmail(String email) {
+    public void shouldSetAndGetEmailCorrectly(String email) {
         userReservationDTO.setEmail(email);
         assertEquals(email, userReservationDTO.getEmail(), "Email should be set and retrieved correctly.");
     }
@@ -53,7 +53,7 @@ public class UserReservationDTOTest {
             "987-654-3210",
             "555-666-7777"
     })
-    public void testSetAndGetPhone(String phone) {
+    public void shouldSetAndGetPhoneCorrectly(String phone) {
         userReservationDTO.setPhone(phone);
         assertEquals(phone, userReservationDTO.getPhone(), "Phone should be set and retrieved correctly.");
     }
@@ -64,14 +64,14 @@ public class UserReservationDTOTest {
             "456 Elm St, Shelbyville",
             "789 Oak St, Capital City"
     })
-    public void testSetAndGetAddress(String address) {
+    public void shouldSetAndGetAddressCorrectly(String address) {
         userReservationDTO.setAddress(address);
         assertEquals(address, userReservationDTO.getAddress(), "Address should be set and retrieved correctly.");
     }
 
     @ParameterizedTest
     @ValueSource(ints = {101, 202, 303})
-    public void testSetAndGetBookId(int bookId) {
+    public void shouldSetAndGetBookIdCorrectly(int bookId) {
         userReservationDTO.setBookId(bookId);
         assertEquals(bookId, userReservationDTO.getBookId(), "Book ID should be set and retrieved correctly.");
     }
@@ -82,7 +82,7 @@ public class UserReservationDTOTest {
             "2024-02-15",
             "2024-12-31"
     })
-    public void testSetAndGetReservedDate(String reservedDateStr) {
+    public void shouldSetAndGetReservedDateCorrectly(String reservedDateStr) {
         Date reservedDate = Date.valueOf(reservedDateStr);
         userReservationDTO.setReservedDate(reservedDate);
         assertEquals(reservedDate, userReservationDTO.getReservedDate(), "Reserved date should be set and retrieved correctly.");

@@ -15,7 +15,7 @@ public class JournalTest {
     }
 
     @Test
-    public void testGetAndSetIssn() {
+    public void shouldSetAndRetrieveIssnCorrectly() {
         String expectedIssn = "1234-5678";
 
         journal.setIssn(expectedIssn);
@@ -25,7 +25,7 @@ public class JournalTest {
     }
 
     @Test
-    public void testGetAndSetPublisher() {
+    public void shouldSetAndRetrievePublisherCorrectly() {
         String expectedPublisher = "Springer";
 
         journal.setPublisher(expectedPublisher);
@@ -35,16 +35,14 @@ public class JournalTest {
     }
 
     @Test
-    public void testConstructorAndSetters() {
+    public void shouldSetIssnAndPublisherCorrectly() {
         String expectedIssn = "9876-5432";
         String expectedPublisher = "Elsevier";
 
         journal.setIssn(expectedIssn);
         journal.setPublisher(expectedPublisher);
 
-        // Then
         assertEquals(expectedIssn, journal.getIssn(), "The ISSN should be correctly set.");
         assertEquals(expectedPublisher, journal.getPublisher(), "The publisher should be correctly set.");
     }
-
 }

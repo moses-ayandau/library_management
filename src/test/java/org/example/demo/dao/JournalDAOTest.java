@@ -52,7 +52,7 @@ public class JournalDAOTest {
 
 
     @Test
-    public void testGetJournalById_Success() throws Exception {
+    public void shouldRetrieveJournalByIdSuccessfully() throws Exception {
         Journal journal = new Journal();
         journal.setTitle("Journal Title");
         journal.setPublishedYear(2024);
@@ -60,7 +60,7 @@ public class JournalDAOTest {
         journal.setPublisher("Publisher Name");
 
         journalDAO.addJournal(journal);
-        int generatedId = journal.getID(); // Get the auto-generated ID
+        int generatedId = journal.getID();
 
         Journal retrievedJournal = journalDAO.getJournalById(generatedId);
 
@@ -70,13 +70,13 @@ public class JournalDAOTest {
     }
 
     @Test
-    public void testGetJournalById_NotFound() throws Exception {
+    public void shouldReturnNullWhenJournalByIdNotFound() throws Exception {
         Journal journal = journalDAO.getJournalById(999);
         assertNull(journal);
     }
 
     @Test
-    public void testDeleteJournal_Success() throws Exception {
+    public void shouldDeleteJournalSuccessfully() throws Exception {
         Journal journal = new Journal();
         journal.setTitle("Journal Title");
         journal.setPublishedYear(2024);
@@ -101,7 +101,7 @@ public class JournalDAOTest {
 
 
     @Test
-    public void testGetAllJournals_Success() throws Exception {
+    public void shouldRetrieveAllJournalsSuccessfully() throws Exception {
         Journal journal1 = new Journal();
         journal1.setTitle("Journal 1");
         journal1.setPublishedYear(2024);
@@ -142,7 +142,7 @@ public class JournalDAOTest {
         assertEquals("Publisher 2", retrievedJournal2.getPublisher());
     }
     @Test
-    public void testAddJournalWithNullOrEmptyFields() throws Exception {
+    public void shouldAddJournalWithNullOrEmptyFieldsSuccessfully() throws Exception {
         Journal journal = new Journal();
         journal.setTitle("");
         journal.setPublishedYear(2024);
@@ -159,7 +159,7 @@ public class JournalDAOTest {
         assertEquals(generatedId, retrievedJournal.getID());
     }
     @Test
-    public void testDeleteNonExistentJournalShouldReturnFalse() throws Exception {
+    public void shouldReturnFalseWhenDeletingNonExistentJournal() throws Exception {
         boolean isDeleted = journalDAO.deleteJournal(9999);
         assertFalse(isDeleted, "Deleting a non-existent journal should return false.");
     }

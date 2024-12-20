@@ -25,11 +25,11 @@ import static org.mockito.Mockito.*;
 
 public class TransactionControllerTest {
 
+    @Mock
     private TransactionController controller;
 
     @Mock
     private TransactionDAO mockTransactionDAO;
-
 
     @BeforeAll
     static void initToolkit() {
@@ -37,6 +37,7 @@ public class TransactionControllerTest {
             Platform.startup(() -> {});
         }
     }
+
     @BeforeEach
     void setUp() throws InterruptedException {
         MockitoAnnotations.openMocks(this);
@@ -58,9 +59,8 @@ public class TransactionControllerTest {
         latch.await();
     }
 
-
     @Test
-    void testHandleCreateTransaction_InvalidInput() throws SQLException {
+    void shouldNotCreateTransactionWhenInputIsInvalid() throws SQLException {
         controller.bookIdField.setText("");
         controller.patronIdField.setText("");
 
@@ -69,9 +69,8 @@ public class TransactionControllerTest {
         verify(mockTransactionDAO, never()).createTransaction(any(Transaction.class));
     }
 
-
     @Test
-    void testHandleReturnBook_NoSelection() throws SQLException {
+    void shouldNotReturnBookWhenNoTransactionIsSelected() throws SQLException {
         controller.transactionTable.getSelectionModel().clearSelection();
 
         Platform.runLater(() -> {
@@ -86,7 +85,7 @@ public class TransactionControllerTest {
     }
 
     @Test
-    void testLoadActiveTransactions_Successful() throws SQLException, InterruptedException {
+    void shouldLoadActiveTransactionsSuccessfully() throws SQLException, InterruptedException {
         Transaction transaction1 = new Transaction();
         transaction1.setID(1);
         transaction1.setBookID(101);
@@ -120,5 +119,4 @@ public class TransactionControllerTest {
         assertEquals(2, controller.transactionTable.getItems().size(), "Table should contain 2 transactions.");
         verify(mockTransactionDAO).getActiveTransactions();
     }
-
 }

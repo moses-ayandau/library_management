@@ -34,7 +34,6 @@
 //
 //    @BeforeAll
 //    static void initJavaFX() throws InterruptedException {
-//        // Initialize JavaFX environment
 //        CountDownLatch latch = new CountDownLatch(1);
 //        Platform.startup(() -> {
 //            new JFXPanel();
@@ -50,7 +49,6 @@
 //            authController = new AuthController();
 //            authController.setUserDAO(mockUserDAO);
 //
-//            // Setup FXML fields manually for testing
 //            authController.nameField = new TextField();
 //            authController.emailField = new TextField();
 //            authController.phoneField = new TextField();
@@ -65,7 +63,7 @@
 //    }
 //
 //    @Test
-//    void testCreateAccountSuccess() throws SQLException, InterruptedException {
+//    void shouldCreateAccountSuccessfully() throws SQLException, InterruptedException {
 //        CountDownLatch latch = new CountDownLatch(1);
 //
 //        Platform.runLater(() -> {
@@ -99,7 +97,7 @@
 //    }
 //
 //    @Test
-//    void testLoginSuccess() throws SQLException, InterruptedException {
+//    void shouldLoginSuccessfully() throws SQLException, InterruptedException {
 //        CountDownLatch latch = new CountDownLatch(1);
 //
 //        Platform.runLater(() -> {
@@ -126,9 +124,8 @@
 //        assertTrue(latch.await(10, TimeUnit.SECONDS), "Test timed out");
 //    }
 //
-//
 //    @Test
-//    void testToggleCreateAccountMode() throws InterruptedException {
+//    void shouldToggleCreateAccountMode() throws InterruptedException {
 //        CountDownLatch latch = new CountDownLatch(1);
 //
 //        Platform.runLater(() -> {
@@ -136,12 +133,10 @@
 //
 //            authController.toggleCreateAccountMode();
 //
-//            // Assert
 //            assertTrue(authController.isCreatingAccount, "Create account mode should be toggled");
 //            latch.countDown();
 //        });
 //
-//        // Wait for the JavaFX thread to complete
 //        assertTrue(latch.await(10, TimeUnit.SECONDS), "Test timed out");
 //    }
 //}

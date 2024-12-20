@@ -22,7 +22,7 @@ public class DatabaseConnectionTest {
     }
 
     @Test
-    public void testGetConnection_Success() throws SQLException {
+    public void shouldReturnConnectionWhenDriverManagerReturnsConnection() throws SQLException {
         try (MockedStatic<DriverManager> mockedStatic = mockStatic(DriverManager.class)) {
             mockedStatic.when(() -> DriverManager.getConnection(anyString(), anyString(), anyString()))
                     .thenReturn(mockConnection);
@@ -33,12 +33,8 @@ public class DatabaseConnectionTest {
         }
     }
 
-
-
-
-
     @Test
-    public void testConfigureH2ForTesting() {
+    public void shouldConfigureH2ForTestingProperly() {
         DatabaseConnection.configureH2ForTesting();
 
         assertEquals("jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1", DatabaseConnection.url, "H2 URL should be configured for testing");

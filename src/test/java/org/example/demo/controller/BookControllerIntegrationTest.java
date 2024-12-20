@@ -75,9 +75,8 @@
 //        latch.await(5, TimeUnit.SECONDS);
 //    }
 //
-//
 //    @Test
-//    void testAddBook_ValidationFailure() throws InterruptedException {
+//    void shouldFailToAddBookWhenInputIsInvalid() throws InterruptedException {
 //        CountDownLatch latch = new CountDownLatch(1);
 //
 //        Platform.runLater(() -> {
@@ -90,7 +89,6 @@
 //                bookController.quantityField.setText("5");
 //
 //                bookController.addBook();
-//
 //            } catch (Exception e) {
 //                fail("Unexpected exception: " + e.getMessage());
 //            } finally {
@@ -100,28 +98,23 @@
 //
 //        assertTrue(latch.await(10, TimeUnit.SECONDS), "Test timed out");
 //    }
-
 //
 //    @Test
-//    void testLoadBooks_Success() throws InterruptedException, SQLException {
+//    void shouldLoadBooksSuccessfully() throws InterruptedException, SQLException {
 //        CountDownLatch latch = new CountDownLatch(1);
 //
 //        Platform.runLater(() -> {
 //            try {
-//                // Prepare test data
 //                Stack<Book> testBooks = new Stack<>();
 //                Book book1 = new Book();
 //                book1.setID(1);
 //                book1.setTitle("Test Book 1");
 //                testBooks.add(book1);
 //
-//                // Mock DAO behavior
 //                when(mockBookDAO.getAllBooks()).thenReturn(testBooks);
 //
-//                // Prepare the table view (you might need to use a mock or set up a real TableView)
 //                bookController.loadBooks();
 //
-//                // Verify interaction
 //                verify(mockBookDAO).getAllBooks();
 //            } catch (SQLException e) {
 //                fail("Unexpected SQLException: " + e.getMessage());
@@ -134,24 +127,20 @@
 //    }
 //
 //    @Test
-//    void testGetBookById_Success() throws InterruptedException, SQLException {
+//    void shouldGetBookByIdSuccessfully() throws InterruptedException, SQLException {
 //        CountDownLatch latch = new CountDownLatch(1);
 //
 //        Platform.runLater(() -> {
 //            try {
-//                // Prepare test data
 //                Book testBook = new Book();
 //                testBook.setID(1);
 //                testBook.setTitle("Test Book");
 //
-//                // Setup book ID field
 //                bookController.bookIdField = new TextField();
 //                bookController.bookIdField.setText("1");
 //
-//                // Manually create and set the TableView
 //                bookController.bookTable = new TableView<>();
 //
-//                // Setup column for the TableView
 //                bookController.colId = new TableColumn<>();
 //                bookController.colTitle = new TableColumn<>();
 //                bookController.colDescription = new TableColumn<>();
@@ -160,13 +149,10 @@
 //                bookController.colYear = new TableColumn<>();
 //                bookController.colQuantity = new TableColumn<>();
 //
-//                // Mock DAO behavior
 //                when(mockBookDAO.getBookById(1)).thenReturn(testBook);
 //
-//                // Prepare the table view
 //                bookController.getBookById(null);
 //
-//                // Verify interaction
 //                verify(mockBookDAO).getBookById(1);
 //            } catch (SQLException e) {
 //                fail("Unexpected SQLException: " + e.getMessage());

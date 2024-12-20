@@ -1,6 +1,5 @@
 package org.example.demo.dao;
 
-import org.example.demo.dao.UserDAO;
 import org.example.demo.entity.Role;
 import org.example.demo.entity.User;
 import org.example.demo.db.conn.DatabaseConnection;
@@ -17,7 +16,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class UserDAOTest {
-
 
     private UserDAO userDAO;
     private Connection mockConnection;
@@ -58,8 +56,9 @@ public class UserDAOTest {
             stmt.execute("DELETE FROM Users;");
         }
     }
+
     @Test
-    public void testCreateUser_Success() throws Exception {
+    public void shouldCreateUserSuccessfully() throws Exception {
         User user = new User("John Smith", "john.smith@example.com", "1122334455", "789 Oak St", "password123", Role.PATRON);
 
         boolean result = userDAO.createUser(user);
@@ -67,23 +66,22 @@ public class UserDAOTest {
         assertTrue(result);
     }
 
-
     @Test
-    public void testLoginUser_Failure_InvalidPassword() throws Exception {
+    public void shouldFailLoginWithInvalidPassword() throws Exception {
         User user = userDAO.loginUser("john.doe@example.com", "wrongpassword");
 
         assertNull(user);
     }
 
     @Test
-    public void testLoginUser_Failure_UserNotFound() throws Exception {
+    public void shouldFailLoginWhenUserNotFound() throws Exception {
         User user = userDAO.loginUser("nonexistent@example.com", "password123");
 
         assertNull(user);
     }
 
     @Test
-    public void testGetAllUsers_EmptyResultSet() throws Exception {
+    public void shouldReturnEmptyResultSetWhenNoUsersFound() throws Exception {
         try (PreparedStatement stmt = mockConnection.prepareStatement("SELECT * FROM Users WHERE Email = 'nonexistent@example.com'")) {
             ResultSet rs = stmt.executeQuery();
 
@@ -92,7 +90,7 @@ public class UserDAOTest {
     }
 
     @Test
-    public void testGetAllUsers_Success() throws Exception {
+    public void shouldRetrieveAllUsersSuccessfully() throws Exception {
         List<User> users = userDAO.getAllUsers();
 
         assertNotNull(users);
@@ -100,11 +98,9 @@ public class UserDAOTest {
     }
 
     @Test
-    public void testLoginUser_IncorrectPassword() throws SQLException {
+    public void shouldFailLoginWithIncorrectPassword() throws SQLException {
         User user = userDAO.loginUser("john.doe@example.com", "incorrectPassword");
 
         assertNull(user, "Login should fail with incorrect password.");
     }
-
-
 }
