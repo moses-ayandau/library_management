@@ -18,7 +18,7 @@ public class JournalDTOTest {
 
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 100})
-    public void testSetAndGetID(int id) {
+    public void shouldSetAndGetIDCorrectly(int id) {
         journalDTO.setID(id);
         assertEquals(id, journalDTO.getID(), "ID should be set and retrieved correctly.");
     }
@@ -29,14 +29,14 @@ public class JournalDTOTest {
             "Advanced Research",
             "Machine Learning Trends"
     })
-    public void testSetAndGetTitle(String title) {
+    public void shouldSetAndGetTitleCorrectly(String title) {
         journalDTO.setTitle(title);
         assertEquals(title, journalDTO.getTitle(), "Title should be set and retrieved correctly.");
     }
 
     @ParameterizedTest
     @ValueSource(ints = {2020, 2023, 2024})
-    public void testSetAndGetPublishedYear(int publishedYear) {
+    public void shouldSetAndGetPublishedYearCorrectly(int publishedYear) {
         journalDTO.setPublishedYear(publishedYear);
         assertEquals(publishedYear, journalDTO.getPublishedYear(), "Published year should be set and retrieved correctly.");
     }
@@ -47,7 +47,7 @@ public class JournalDTOTest {
             "9876-5432",
             "1122-3344"
     })
-    public void testSetAndGetIssn(String issn) {
+    public void shouldSetAndGetIssnCorrectly(String issn) {
         journalDTO.setIssn(issn);
         assertEquals(issn, journalDTO.getIssn(), "ISSN should be set and retrieved correctly.");
     }
@@ -58,7 +58,7 @@ public class JournalDTOTest {
             "Academic Press",
             "Research International"
     })
-    public void testSetAndGetPublisher(String publisher) {
+    public void shouldSetAndGetPublisherCorrectly(String publisher) {
         journalDTO.setPublisher(publisher);
         assertEquals(publisher, journalDTO.getPublisher(), "Publisher should be set and retrieved correctly.");
     }

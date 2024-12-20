@@ -16,7 +16,7 @@ public class UserTest {
     }
 
     @Test
-    public void testGetAndSetID() {
+    public void shouldSetAndGetIDCorrectly() {
         int expectedID = 1;
 
         user.setID(expectedID);
@@ -26,7 +26,7 @@ public class UserTest {
     }
 
     @Test
-    public void testGetAndSetName() {
+    public void shouldSetAndGetNameCorrectly() {
         String expectedName = "John Doe";
 
         user.setName(expectedName);
@@ -36,111 +36,88 @@ public class UserTest {
     }
 
     @Test
-    public void testGetAndSetEmail() {
-        // Given
+    public void shouldSetAndGetEmailCorrectly() {
         String expectedEmail = "john.doe@example.com";
 
-        // When
         user.setEmail(expectedEmail);
         String actualEmail = user.getEmail();
 
-        // Then
         assertEquals(expectedEmail, actualEmail, "The email should be set and retrieved correctly.");
     }
 
     @Test
-    public void testGetAndSetPhone() {
-        // Given
+    public void shouldSetAndGetPhoneCorrectly() {
         String expectedPhone = "123-456-7890";
 
-        // When
         user.setPhone(expectedPhone);
         String actualPhone = user.getPhone();
 
-        // Then
         assertEquals(expectedPhone, actualPhone, "The phone should be set and retrieved correctly.");
     }
 
     @Test
-    public void testGetAndSetAddress() {
-        // Given
+    public void shouldSetAndGetAddressCorrectly() {
+
         String expectedAddress = "123 Main St";
 
-        // When
         user.setAddress(expectedAddress);
         String actualAddress = user.getAddress();
 
-        // Then
         assertEquals(expectedAddress, actualAddress, "The address should be set and retrieved correctly.");
     }
 
     @Test
-    public void testGetAndSetPassword() {
-        // Given
+    public void shouldSetAndGetPasswordCorrectly() {
         String expectedPassword = "password123";
 
-        // When
         user.setPassword(expectedPassword);
         String actualPassword = user.getPassword();
 
-        // Then
         assertEquals(expectedPassword, actualPassword, "The password should be set and retrieved correctly.");
     }
 
     @Test
-    public void testGetAndSetRole() {
-        // Given
+    public void shouldSetAndGetRoleCorrectly() {
         Role expectedRole = Role.ADMIN;
 
-        // When
         user.setRole(expectedRole);
         Role actualRole = user.getRole();
 
-        // Then
         assertEquals(expectedRole, actualRole, "The role should be set and retrieved correctly.");
     }
 
     @Test
-    public void testGetAndSetReservations() {
-        // Given
+    public void shouldSetAndGetReservationsCorrectly() {
         Reservation reservation = new Reservation();
         List<Reservation> reservations = List.of(reservation);
 
-        // When
         user.setReservations(reservations);
         List<Reservation> actualReservations = user.getReservations();
 
-        // Then
         assertEquals(reservations, actualReservations, "The reservations should be set and retrieved correctly.");
     }
 
     @Test
-    public void testGetAndSetBooks() {
-        // Given
+    public void shouldAddBookToBooksList() {
         Book book = new Book();
         List<Book> books = List.of(book);
 
-        // When
-        user.books.add(book);  // Adding a book to the list
+        user.books.add(book);
         List<Book> actualBooks = user.getBooks();
 
-        // Then
         assertTrue(actualBooks.contains(book), "The book should be added to the user's books list.");
     }
 
     @Test
-    public void testUserConstructor() {
-        // Given
+    public void shouldInitializeUserWithCorrectAttributes() {
         String name = "John Doe";
         String email = "john.doe@example.com";
         String phone = "123-456-7890";
         String address = "123 Main St";
         Role role = Role.PATRON;
 
-        // When
         User newUser = new User(name, email, phone, address, role);
 
-        // Then
         assertEquals(name, newUser.getName(), "The name should be set correctly.");
         assertEquals(email, newUser.getEmail(), "The email should be set correctly.");
         assertEquals(phone, newUser.getPhone(), "The phone should be set correctly.");

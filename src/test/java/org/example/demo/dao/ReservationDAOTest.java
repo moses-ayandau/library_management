@@ -41,7 +41,7 @@ public class ReservationDAOTest {
     }
 
     @Test
-    public void testAddReservation_Success() throws SQLException {
+    public void shouldAddReservationSuccessfully() throws SQLException {
         try (MockedStatic<DatabaseConnection> mockedStaticDB = mockStatic(DatabaseConnection.class)) {
 
             Reservation reservation = new Reservation();
@@ -63,7 +63,7 @@ public class ReservationDAOTest {
     }
 
     @Test
-    public void testAddReservation_Failure() throws SQLException {
+    public void shouldFailToAddReservation() throws SQLException {
         try (MockedStatic<DatabaseConnection> mockedStaticDB = mockStatic(DatabaseConnection.class)) {
             Reservation reservation = new Reservation();
             reservation.setBookID(1);
@@ -81,10 +81,8 @@ public class ReservationDAOTest {
     }
 
 
-
-
     @Test
-    public void testGetReservationById_Found() throws SQLException {
+    public void shouldGetReservationByIdWhenFound() throws SQLException {
         try (MockedStatic<DatabaseConnection> mockedStaticDB = mockStatic(DatabaseConnection.class)) {
 
             int reservationId = 1;
@@ -109,7 +107,7 @@ public class ReservationDAOTest {
     }
 
     @Test
-    public void testGetReservationById_NotFound() throws SQLException {
+    public void shouldReturnNullWhenReservationByIdNotFound() throws SQLException {
         try (MockedStatic<DatabaseConnection> mockedStaticDB = mockStatic(DatabaseConnection.class)) {
 
             int reservationId = 1;
@@ -128,7 +126,7 @@ public class ReservationDAOTest {
 
 
     @Test
-    public void testDeleteReservation() throws SQLException {
+    public void shouldDeleteReservationSuccessfully() throws SQLException {
         try (MockedStatic<DatabaseConnection> mockedStaticDB = mockStatic(DatabaseConnection.class)) {
 
             int reservationId = 1;
@@ -146,7 +144,7 @@ public class ReservationDAOTest {
     }
 
     @Test
-    public void testGetAllReservations() throws SQLException {
+    public void shouldRetrieveAllReservationsSuccessfully() throws SQLException {
         try (MockedStatic<DatabaseConnection> mockedStaticDB = mockStatic(DatabaseConnection.class)) {
 
             mockedStaticDB.when(DatabaseConnection::getConnection).thenReturn(mockConnection);
@@ -173,7 +171,7 @@ public class ReservationDAOTest {
     }
 
     @Test
-    public void testGetReservationByID_Alternative() throws SQLException {
+    public void shouldGetReservationByIdUsingAlternativeMethod() throws SQLException {
         try (MockedStatic<DatabaseConnection> mockedStaticDB = mockStatic(DatabaseConnection.class)) {
 
             int reservationId = 1;
@@ -197,8 +195,9 @@ public class ReservationDAOTest {
             assertEquals(200, result.getBookID());
         }
     }
+
     @Test
-    public void testAddDuplicateReservation() throws SQLException {
+    public void shouldRejectDuplicateReservation() throws SQLException {
         try (MockedStatic<DatabaseConnection> mockedStaticDB = mockStatic(DatabaseConnection.class)) {
 
             Reservation reservation = new Reservation();
@@ -216,8 +215,9 @@ public class ReservationDAOTest {
             assertFalse(result, "The system should reject duplicate reservations.");
         }
     }
+
     @Test
-    public void testGetAllReservations_EmptyDatabase() throws SQLException {
+    public void shouldHandleEmptyDatabaseWhenRetrievingAllReservations() throws SQLException {
         try (MockedStatic<DatabaseConnection> mockedStaticDB = mockStatic(DatabaseConnection.class)) {
 
             mockedStaticDB.when(DatabaseConnection::getConnection).thenReturn(mockConnection);

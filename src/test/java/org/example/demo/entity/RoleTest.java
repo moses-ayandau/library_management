@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class RoleTest {
 
     @Test
-    public void testEnumValues() {
+    public void shouldContainExactlyTwoRoles() {
         Role[] roles = Role.values();
 
         assertEquals(2, roles.length, "There should be exactly 2 roles.");
@@ -16,25 +16,25 @@ public class RoleTest {
     }
 
     @Test
-    public void testEnumName() {
+    public void shouldReturnCorrectRoleName() {
         assertEquals("PATRON", Role.PATRON.name(), "The name of the PATRON role should be 'PATRON'.");
         assertEquals("ADMIN", Role.ADMIN.name(), "The name of the ADMIN role should be 'ADMIN'.");
     }
 
     @Test
-    public void testEnumOrdinal() {
+    public void shouldReturnCorrectRoleOrdinal() {
         assertEquals(0, Role.PATRON.ordinal(), "The ordinal of PATRON should be 0.");
         assertEquals(1, Role.ADMIN.ordinal(), "The ordinal of ADMIN should be 1.");
     }
 
     @Test
-    public void testEnumComparison() {
+    public void shouldCompareRolesCorrectly() {
         assertSame(Role.PATRON, Role.PATRON, "The PATRON role should be the same instance.");
         assertNotSame(Role.PATRON, Role.ADMIN, "The PATRON and ADMIN roles should be different instances.");
     }
 
     @Test
-    public void testEnumValueOf() {
+    public void shouldReturnRoleFromValueOfMethod() {
         assertEquals(Role.PATRON, Role.valueOf("PATRON"), "valueOf should return the correct enum constant.");
         assertThrows(IllegalArgumentException.class, () -> Role.valueOf("INVALID"), "valueOf should throw IllegalArgumentException for invalid input.");
     }

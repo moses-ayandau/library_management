@@ -16,7 +16,7 @@ public class ReservationTest {
     }
 
     @Test
-    public void testGetAndSetID() {
+    public void shouldSetAndGetReservationIDCorrectly() {
         int expectedID = 1;
 
         reservation.setID(expectedID);
@@ -26,7 +26,7 @@ public class ReservationTest {
     }
 
     @Test
-    public void testGetAndSetPatronID() {
+    public void shouldSetAndGetPatronIDCorrectly() {
         int expectedPatronID = 101;
 
         reservation.setPatronID(expectedPatronID);
@@ -36,7 +36,7 @@ public class ReservationTest {
     }
 
     @Test
-    public void testGetAndSetBookID() {
+    public void shouldSetAndGetBookIDCorrectly() {
         int expectedBookID = 202;
 
         reservation.setBookID(expectedBookID);
@@ -46,7 +46,7 @@ public class ReservationTest {
     }
 
     @Test
-    public void testGetAndSetReservedDate() {
+    public void shouldSetAndGetReservedDateCorrectly() {
         Date expectedReservedDate = Date.valueOf("2024-12-13");
 
         reservation.setReservedDate(expectedReservedDate);
@@ -56,7 +56,7 @@ public class ReservationTest {
     }
 
     @Test
-    public void testGetAndSetStatus() {
+    public void shouldSetAndGetStatusCorrectly() {
         ReservationStatus expectedStatus = ReservationStatus.PENDING;
 
         reservation.setStatus(expectedStatus);
@@ -66,7 +66,7 @@ public class ReservationTest {
     }
 
     @Test
-    public void testGetAndSetDueDate() {
+    public void shouldSetAndGetDueDateCorrectly() {
         Date expectedDueDate = Date.valueOf("2024-12-20");
 
         reservation.setDueDate(expectedDueDate);
@@ -76,7 +76,7 @@ public class ReservationTest {
     }
 
     @Test
-    public void testReservationConstructor() {
+    public void shouldInitializeReservationWithCorrectValues() {
         int expectedID = 1;
         int expectedPatronID = 101;
         int expectedBookID = 202;

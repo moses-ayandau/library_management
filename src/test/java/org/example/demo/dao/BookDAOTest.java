@@ -18,8 +18,6 @@ class BookDAOTest {
     private BookDAO bookDAO;
     private Connection connection;
 
-
-
     @BeforeEach
     void setUp() throws SQLException {
 
@@ -65,7 +63,7 @@ class BookDAOTest {
     }
 
     @Test
-    void testGetAllBooksShouldReturnWithSUccess() throws SQLException {
+    void shouldRetrieveAllBooksSuccessfully() throws SQLException {
         Stack<Book> books = bookDAO.getAllBooks();
 
         assertTrue(books.size() > 0, "There should be at least 1 book in the database.");
@@ -73,7 +71,7 @@ class BookDAOTest {
     }
 
     @Test
-    void testAddBookShouldReturnWIthSuccess() throws SQLException {
+    void shouldAddBookSuccessfully() throws SQLException {
         Book book = new Book();
         book.setID(0);
         book.setTitle("Book Title");
@@ -90,9 +88,8 @@ class BookDAOTest {
         assertEquals("Book Title", books.peek().getTitle());
     }
 
-
     @Test
-    void testGetBookByIdShouldGetBookIDWIthSuccess() throws SQLException {
+    void shouldRetrieveBookByIdSuccessfully() throws SQLException {
         Book book = bookDAO.getBookById(1);
 
         assertNotNull(book, "Book with ID 1 should exist.");
@@ -100,15 +97,14 @@ class BookDAOTest {
     }
 
     @Test
-    void testGetBookByIdNotFoundShouldNotFindBOok() throws SQLException {
+    void shouldReturnNullWhenBookByIdNotFound() throws SQLException {
         Book book = bookDAO.getBookById(999);
 
         assertNull(book, "Book with non-existent ID should return null.");
     }
 
-
     @Test
-    void testUpdateBookNotFoundShouldBecauseBookBecauseBookNotFound() throws SQLException {
+    void shouldReturnFalseWhenUpdatingNonExistentBook() throws SQLException {
         Book book = new Book();
         book.setID(34);
         book.setTitle("Book Title");
@@ -119,14 +115,13 @@ class BookDAOTest {
 
         boolean result = bookDAO.updateBook(book);
 
-
         assertFalse(result, "Update should return false for non-existent book.");
     }
 
     @Test
-    void testDeleteBookShouldDeleteBookWIthSuccess() throws SQLException {
+    void shouldDeleteBookSuccessfully() throws SQLException {
         Book book = new Book();
-        book.setID(0); // Assuming 0 will allow auto-generation of ID
+        book.setID(0);
         book.setTitle("Book Title");
         book.setDescription("Book Description");
         book.setAuthor("Book Author");
@@ -134,18 +129,16 @@ class BookDAOTest {
         book.setPublishedYear(2021);
         book.setQuantity(10);
 
-
-        bookDAO.addBook(book);  //
+        bookDAO.addBook(book);
 
         boolean result = bookDAO.deleteBook(1);
 
-        // Assert
 //        assertTrue(result, "Book with ID 1 should be deleted.");
 //        assertNull(bookDAO.getBookById(1), "Book with ID 1 should no longer exist.");
     }
 
     @Test
-    void testUpdateBookQuantityShouldWorkWithSuccess() throws SQLException {
+    void shouldUpdateBookQuantitySuccessfully() throws SQLException {
         Book book = bookDAO.getBookById(1);
         assertNotNull(book, "Book should exist before updating");
 
@@ -158,17 +151,14 @@ class BookDAOTest {
     }
 
     @Test
-    void testDeleteBookNotFoundShouldReturnWithFailure() throws SQLException {
-
+    void shouldReturnFalseWhenDeletingNonExistentBook() throws SQLException {
         boolean result = bookDAO.deleteBook(999);
-
 
         assertFalse(result, "Delete should return false for non-existent book.");
     }
 
-
     @Test
-    void testGetAllBooksShouldReturnEmptyWhenNoBooks() throws SQLException {
+    void shouldReturnEmptyListWhenNoBooksInDatabase() throws SQLException {
         try (Statement stmt = connection.createStatement()) {
             stmt.execute("DELETE FROM Book");
         }
@@ -178,7 +168,7 @@ class BookDAOTest {
     }
 
     @Test
-    void testUpdateBookShouldReturnFalseForNonExistentBook() throws SQLException {
+    void shouldNotUpdateNonExistentBook() throws SQLException {
         Book book = new Book();
         book.setID(999);
         book.setTitle("Non-existent Book");
@@ -191,27 +181,15 @@ class BookDAOTest {
         boolean result = bookDAO.updateBook(book);
         assertFalse(result, "Updating a non-existent book should return false.");
     }
+
     @Test
-    void testDeleteBookShouldReturnFalseForNonExistentBook() throws SQLException {
+    void shouldNotDeleteNonExistentBook() throws SQLException {
         boolean result = bookDAO.deleteBook(999);
         assertFalse(result, "Deleting a non-existent book should return false.");
     }
 
     @Test
-    void testUpdateBookQuantityShouldReturnWithSuccess() throws SQLException {
-        Book book = bookDAO.getBookById(1);
-        assertNotNull(book, "Book should exist before updating");
-
-        book.setQuantity(10);
-        boolean result = bookDAO.updateBook(book);
-
-        assertTrue(result, "Book quantity should be updated successfully.");
-        Book updatedBook = bookDAO.getBookById(1);
-        assertEquals(10, updatedBook.getQuantity(), "Updated quantity should match.");
-    }
-
-    @Test
-    void testAddBookWithZeroQuantity() throws SQLException {
+    void shouldAddBookWithZeroQuantitySuccessfully() throws SQLException {
         Book book = new Book();
         book.setID(0);
         book.setTitle("Zero Quantity Book");
@@ -226,5 +204,4 @@ class BookDAOTest {
         assertTrue(books.stream().anyMatch(b -> b.getTitle().equals("Zero Quantity Book")));
         assertEquals(0, books.stream().filter(b -> b.getTitle().equals("Zero Quantity Book")).findFirst().get().getQuantity(), "Quantity should be zero.");
     }
-
 }

@@ -15,7 +15,7 @@ public class LibraryResourceTest {
     }
 
     @Test
-    public void testGetAndSetID() {
+    public void shouldSetAndRetrieveIDCorrectly() {
         int expectedID = 1;
 
         libraryResource.setID(expectedID);
@@ -25,7 +25,7 @@ public class LibraryResourceTest {
     }
 
     @Test
-    public void testGetAndSetTitle() {
+    public void shouldSetAndRetrieveTitleCorrectly() {
         String expectedTitle = "The Great Gatsby";
 
         libraryResource.setTitle(expectedTitle);
@@ -35,7 +35,7 @@ public class LibraryResourceTest {
     }
 
     @Test
-    public void testGetAndSetPublishedYear() {
+    public void shouldSetAndRetrievePublishedYearCorrectly() {
         int expectedYear = 1925;
 
         libraryResource.setPublishedYear(expectedYear);

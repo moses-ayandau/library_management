@@ -22,9 +22,11 @@ import java.util.concurrent.CountDownLatch;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
+
 @ExtendWith(MockitoExtension.class)
 public class ReservationControllerTest {
 
+    @Mock
     private ReservationController controller;
 
     @Mock
@@ -32,10 +34,9 @@ public class ReservationControllerTest {
 
     @BeforeAll
     static void initToolkit() {
-        // Avoid calling Platform.startup if it is already initialized
-//        if (!Platform.isFxApplicationThread()) {
-//            Platform.startup(() -> {});
-//        }
+        if (!Platform.isFxApplicationThread()) {
+            Platform.startup(() -> {});
+        }
     }
 
     @BeforeEach
@@ -60,7 +61,7 @@ public class ReservationControllerTest {
     }
 
     @Test
-    public void testHandleCreateReservation_InvalidInput() throws SQLException {
+    public void shouldNotCreateReservationWhenInputIsInvalid() throws SQLException {
         controller.patronIdField.setText("");
         controller.bookIdField.setText("");
 
@@ -70,7 +71,7 @@ public class ReservationControllerTest {
     }
 
     @Test
-    public void testHandleDeleteReservation_Successful() throws SQLException {
+    public void shouldDeleteReservationSuccessfully() throws SQLException {
         Reservation reservation = new Reservation();
         reservation.setID(1);
 
@@ -85,7 +86,7 @@ public class ReservationControllerTest {
     }
 
     @Test
-    public void testHandleDeleteReservation_NoSelection() throws SQLException {
+    public void shouldNotDeleteReservationWhenNoReservationIsSelected() throws SQLException {
         controller.reservationTable.getSelectionModel().clearSelection();
 
         controller.handleDeleteReservation();
@@ -94,7 +95,7 @@ public class ReservationControllerTest {
     }
 
     @Test
-    public void testLoadReservations_Successful() throws SQLException {
+    public void shouldLoadReservationsSuccessfully() throws SQLException {
         Reservation reservation1 = new Reservation();
         reservation1.setID(1);
         reservation1.setPatronID(1);

@@ -29,25 +29,24 @@ public class TransactionDAOTest {
 
             stmt.execute("DROP TABLE IF EXISTS transaction");
             stmt.execute("""
-            CREATE TABLE IF NOT EXISTS transaction (
-                ID INT PRIMARY KEY AUTO_INCREMENT,
-                bookID INT,
-                userID INT,
-                borrowedDate DATE,
-                dueDate DATE,
-                returnedDate DATE
-            );
-        """);
+                        CREATE TABLE IF NOT EXISTS transaction (
+                            ID INT PRIMARY KEY AUTO_INCREMENT,
+                            bookID INT,
+                            userID INT,
+                            borrowedDate DATE,
+                            dueDate DATE,
+                            returnedDate DATE
+                        );
+                    """);
 
             stmt.execute("""
-            INSERT INTO transaction (bookID, userID, borrowedDate, dueDate)
-            VALUES
-            (1, 1, CURRENT_DATE, CURRENT_DATE + 7),
-            (2, 2, CURRENT_DATE, CURRENT_DATE + 7);
-        """);
+                        INSERT INTO transaction (bookID, userID, borrowedDate, dueDate)
+                        VALUES
+                        (1, 1, CURRENT_DATE, CURRENT_DATE + 7),
+                        (2, 2, CURRENT_DATE, CURRENT_DATE + 7);
+                    """);
         }
     }
-
 
 
     @AfterEach
@@ -61,7 +60,7 @@ public class TransactionDAOTest {
     }
 
     @Test
-    public void testCreateTransaction_Successful() throws SQLException {
+    public void shouldCreateTransactionSuccessfully() throws SQLException {
         Transaction transaction = new Transaction();
         transaction.setBookID(3);
         transaction.setPatronID(3);
@@ -75,7 +74,7 @@ public class TransactionDAOTest {
     }
 
     @Test
-    public void testReturnBook_Successful() throws SQLException {
+    public void shouldReturnBookSuccessfully() throws SQLException {
         Transaction transaction = new Transaction();
         transaction.setBookID(1);
         transaction.setPatronID(1);
@@ -97,8 +96,9 @@ public class TransactionDAOTest {
             }
         }
     }
+
     @Test
-    public void testGetActiveTransactions_MultipleTransactions() throws SQLException {
+    public void shouldRetrieveMultipleActiveTransactions() throws SQLException {
         Transaction transaction1 = new Transaction();
         transaction1.setBookID(1);
         transaction1.setPatronID(1);
@@ -124,19 +124,21 @@ public class TransactionDAOTest {
 
 
     @Test
-    public void testGetTransactionById_NonExistentTransaction() throws SQLException {
+    public void shouldReturnNullForNonExistentTransactionById() throws SQLException {
         Transaction transaction = transactionDAO.getTransactionById(999);
 
         assertNull(transaction);
     }
+
     @Test
-    public void testReturnNonExistentBook() throws SQLException {
+    public void shouldFailToReturnNonExistentBook() throws SQLException {
         boolean result = transactionDAO.returnBook(999, new java.sql.Date(new Date().getTime()));
 
         assertFalse(result, "Returning a non-existent book should return false.");
     }
+
     @Test
-    public void testGetActiveTransactions_NoActiveTransactions() throws SQLException {
+    public void shouldHandleNoActiveTransactionsGracefully() throws SQLException {
         try (Statement stmt = connection.createStatement()) {
             stmt.execute("DELETE FROM transaction");
         }
